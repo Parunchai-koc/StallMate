@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header"; // Assuming you have a Header component
 
@@ -22,12 +22,8 @@ const ResNMenu = () => {
               { item: "Spicy Soup", price: 70 },
               { item: "Tom Yum Suki", price: 85 },
             ],
-            Rice: [
-              { item: "Vegetable Suki", price: 75 },
-            ],
-            Snack: [
-              { item: "Pork Suki", price: 80 },
-            ],
+            Rice: [{ item: "Vegetable Suki", price: 75 }],
+            Snack: [{ item: "Pork Suki", price: 80 }],
           },
         },
         {
@@ -40,12 +36,8 @@ const ResNMenu = () => {
               { item: "Pork Suki", price: 80 },
               { item: "Seafood Suki", price: 90 },
             ],
-            Rice: [
-              { item: "Chicken Noodle Soup", price: 70 },
-            ],
-            Snack: [
-              { item: "Mixed Vegetable Suki", price: 75 },
-            ],
+            Rice: [{ item: "Chicken Noodle Soup", price: 70 }],
+            Snack: [{ item: "Mixed Vegetable Suki", price: 75 }],
           },
         },
         {
@@ -58,12 +50,8 @@ const ResNMenu = () => {
               { item: "Beef Suki", price: 90 },
               { item: "Herbal Soup", price: 60 },
             ],
-            Rice: [
-              { item: "Spicy Seafood Suki", price: 100 },
-            ],
-            Snack: [
-              { item: "Clear Broth Suki", price: 65 },
-            ],
+            Rice: [{ item: "Spicy Seafood Suki", price: 100 }],
+            Snack: [{ item: "Clear Broth Suki", price: 65 }],
           },
         },
         {
@@ -76,12 +64,8 @@ const ResNMenu = () => {
               { item: "Chicken Noodle Soup", price: 70 },
               { item: "Herbal Soup", price: 60 },
             ],
-            Rice: [
-              { item: "Vegetarian Suki", price: 65 },
-            ],
-            Snack: [
-              { item: "Fish Suki", price: 90 },
-            ],
+            Rice: [{ item: "Vegetarian Suki", price: 65 }],
+            Snack: [{ item: "Fish Suki", price: 90 }],
           },
         },
         {
@@ -90,15 +74,9 @@ const ResNMenu = () => {
           res_type: "à la carte",
           rating: 4.9,
           menu: {
-            Soup: [
-              { item: "Hot Pot", price: 85 },
-            ],
-            Rice: [
-              { item: "Vegetarian Suki", price: 65 },
-            ],
-            Snack: [
-              { item: "Fish Suki", price: 90 },
-            ],
+            Soup: [{ item: "Hot Pot", price: 85 }],
+            Rice: [{ item: "Vegetarian Suki", price: 65 }],
+            Snack: [{ item: "Fish Suki", price: 90 }],
           },
         },
       ];
@@ -124,25 +102,32 @@ const ResNMenu = () => {
       {selectedRestaurant ? (
         <div>
           <h1 className="mb-4 text-white">{selectedRestaurant.name}</h1>
-          <h2 className='text-white'>Menu</h2>
+          <h2 className="text-white">Menu</h2>
           <div className="row">
-            {Object.entries(selectedRestaurant.menu).map(([category, items]) => (
-              <div key={category} className="col-md-4 mb-4">
-                <div className="card">
-                  <div className="card-header">
-                    <h3>{category}</h3>
+            {Object.entries(selectedRestaurant.menu).map(
+              ([category, items]) => (
+                <div key={category} className="col-md-4 mb-4">
+                  <div className="card">
+                    <div className="card-header">
+                      <h3>{category}</h3>
+                    </div>
+                    <ul className="list-group list-group-flush">
+                      {items.map((item, index) => (
+                        <li
+                          key={index}
+                          className="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          {item.item}
+                          <span className="badge bg-primary rounded-pill">
+                            ${item.price}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="list-group list-group-flush">
-                    {items.map((item, index) => (
-                      <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                        {item.item}
-                        <span className="badge bg-primary rounded-pill">${item.price}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       ) : (

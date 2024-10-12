@@ -6,7 +6,7 @@ const NearMe = () => {
   return (
     <div>
       <Header pageTitle={"Near Me"} />
-      <div style={{ marginRight: "65vw" ,marginTop:'5vw'}}>
+      <div style={{ marginRight: "65vw", marginTop: "5vw" }}>
         <button
           className="btn btn-success btn-sm rounded-pill"
           style={{ color: "black", width: "20vw" }}
@@ -15,7 +15,6 @@ const NearMe = () => {
         </button>
       </div>
       <div className="container-fluid">
-        
         <div style={{ marginTop: "50vw" }}>
           <RestaurantList />
         </div>

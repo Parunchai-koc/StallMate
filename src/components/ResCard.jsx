@@ -9,13 +9,19 @@ const ResCard = ({ restaurant }) => {
   };
 
   return (
-    <div className="card" onClick={handleCardClick} style={{ cursor: "pointer" }}>
+    <div
+      className="card"
+      onClick={handleCardClick}
+      style={{ cursor: "pointer" }}
+    >
       <img src={restaurant.pic} className="card-img-top" />
       <div className="card-body">
         <h5 className="card-title">{restaurant.name}</h5>
         <p className="card-text">Type: {restaurant.res_type}</p>
         <p className="card-text">Rating: {restaurant.rating}</p>
-        <p className="card-text">Menu Highlights: {Object.keys(restaurant.menu).join(", ")}</p>
+        <p className="card-text">
+          Menu Highlights: {Object.keys(restaurant.menu).join(", ")}
+        </p>
       </div>
     </div>
   );

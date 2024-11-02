@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 const Header = ({ pageTitle }) => {
     const navigate = useNavigate();
     const [searchVisible, setSearchVisible] = useState(false);
@@ -25,7 +25,7 @@ const Header = ({ pageTitle }) => {
         <div className="container-fluid">
             <div
                 className="container-fluid d-flex fixed-top justify-content-between align-items-center text-light w-100"
-                style={{ height: "20vw", zIndex: 1000, background: "#191A1F" }}
+                style={{ height: "20vw", background: "#191A1F" }}
             >
                 <img
                     className="ms-2"
@@ -48,7 +48,7 @@ const Header = ({ pageTitle }) => {
                         width: '85vw', 
                         marginLeft: 'auto', 
                         marginRight: 'auto', 
-                        marginTop: '130vw',  
+                        marginTop: '15vw',  
                     }}
                 >
                     <form onSubmit={handleSubmit} className='w-100 d-flex justify-content-between'>
@@ -66,6 +66,14 @@ const Header = ({ pageTitle }) => {
                                 required
                                 style={{ background: '#0E162C', height: '9vw', border: 'none' }} 
                             />
+                            <div style={{ marginRight: "65vw", marginTop:"2vw"}}>
+                                <button
+                                className="btn btn-success btn-sm rounded-pill"
+                                style={{ color: "black", width: "20vw" }}
+                                >
+                                Sort By
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>

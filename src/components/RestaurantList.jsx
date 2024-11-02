@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ResCard from "./ResCard";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);

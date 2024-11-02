@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 import LoginSignup from './pages/LoginSignup';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
@@ -15,7 +17,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const isLoggedIn = true; 
+  const { username } = useParams();
+  //const isLoggedIn = useMemo(() => Boolean(username, [username]));
+  const isLoggedIn = true;
   
   return (
     <Router>

@@ -6,6 +6,10 @@ import Header from "../components/Header";
 import CartItem from '../components/CartItem';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { addItem } from '../components/CartSlice';
+import shoplogo from "../assets/shoplogo.png"
+import {Dropdown} from 'react-bootstrap';
+import rice from '../assets/rice.png'
+import addCart from '../assets/addcart.png'
 
 const ResNMenu = () => {
   const navigate = useNavigate();
@@ -17,110 +21,248 @@ const ResNMenu = () => {
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [restaurants, setRestaurants] = useState([]);
-  
+  const [selectedLanguage, setSelectedLanguage] = useState("Language");
+  const [selectedCat, setSelectedCat] = useState("Category");
 
   useEffect(() => {
-    const fetchData = () => {
-      const data = [
-        {
-          pic: "src/assets/ejapic.png",
-          name: "อีจาหมาลำ สุกี้ 1",
-          res_type: "à la carte",
-          rating: 4.7,
-          menu: {
-            Soup: [
-              { item: "Chicken Suki", price: 80 },
-              { item: "Spicy Soup", price: 70 },
-              { item: "Tom Yum Suki", price: 85 },
-            ],
-            Rice: [
-              { item: "Vegetable Suki", price: 75 },
-            ],
-            Snack: [
-              { item: "Pork Suki", price: 80 },
-            ],
-          },
+    const data = [
+      {
+        pic: shoplogo,
+        name: "Siam Brasserie 1",
+        res_type: "à la carte",
+        rating: 4.7,
+        menu: {
+          Soup: [
+            {
+              item: "Chicken Suki",
+              item_th: "สุกี้ไก่",
+              price: 80,
+              description: "Tender chicken served in a flavorful suki broth with vegetables.",
+              description_th: "ไก่เนื้อนุ่มในน้ำซุปสุกี้พร้อมผัก",
+              imageUrl: rice,
+            },
+            {
+              item: "Spicy Soup",
+              item_th: "ซุปเผ็ด",
+              price: 70,
+              description: "A hot and spicy soup to warm your taste buds.",
+              description_th: "ซุปเผ็ดร้อนเพื่อเพิ่มความอร่อย",
+              imageUrl: rice,
+            },
+            {
+              item: "Tom Yum Suki",
+              item_th: "สุกี้ต้มยำ",
+              price: 85,
+              description: "Suki with a spicy and sour Tom Yum flavor.",
+              description_th: "สุกี้รสชาติต้มยำเผ็ดเปรี้ยว",
+              imageUrl: rice,
+            },
+          ],
+          Rice: [
+            {
+              item: "Vegetable Suki",
+              item_th: "สุกี้ผัก",
+              price: 75,
+              description: "A healthy mix of vegetables in suki sauce.",
+              description_th: "สุกี้ผักเพื่อสุขภาพ",
+              imageUrl: rice,
+            },
+          ],
+          Snack: [
+            {
+              item: "Pork Suki",
+              item_th: "สุกี้หมู",
+              price: 80,
+              description: "Savory pork in a light suki broth.",
+              description_th: "หมูในน้ำซุปสุกี้อร่อย",
+              imageUrl: rice,
+            },
+          ],
         },
-        {
-          pic: "src/assets/ejapic.png",
-          name: "อีจาหมาลำ สุกี้ 2",
-          res_type: "à la carte",
-          rating: 4.5,
-          menu: {
-            Soup: [
-              { item: "Pork Suki", price: 80 },
-              { item: "Seafood Suki", price: 90 },
-            ],
-            Rice: [
-              { item: "Chicken Noodle Soup", price: 70 },
-            ],
-            Snack: [
-              { item: "Mixed Vegetable Suki", price: 75 },
-            ],
-          },
+      },
+      {
+        pic: {shoplogo},
+        name: "Siam Brasserie 2",
+        res_type: "à la carte",
+        rating: 4.5,
+        menu: {
+          Soup: [
+            {
+              item: "Pork Suki",
+              item_th: "สุกี้หมู",
+              price: 80,
+              description: "Savory pork in a light suki broth.",
+              description_th: "หมูในน้ำซุปสุกี้อร่อย",
+              imageUrl: rice,
+            },
+            {
+              item: "Seafood Suki",
+              item_th: "สุกี้ทะเล",
+              price: 90,
+              description: "A suki dish with mixed seafood and fresh vegetables.",
+              description_th: "สุกี้ทะเลพร้อมผักสด",
+              imageUrl: rice,
+            },
+          ],
+          Rice: [
+            {
+              item: "Chicken Noodle Soup",
+              item_th: "ซุปก๋วยเตี๋ยวไก่",
+              price: 70,
+              description: "Comforting chicken noodle soup with herbs.",
+              description_th: "ซุปก๋วยเตี๋ยวไก่ร้อนๆ พร้อมสมุนไพร",
+              imageUrl: rice,
+            },
+          ],
+          Snack: [
+            {
+              item: "Mixed Vegetable Suki",
+              item_th: "สุกี้ผักรวม",
+              price: 75,
+              description: "A hearty suki with a variety of vegetables.",
+              description_th: "สุกี้ที่เต็มไปด้วยผักหลายชนิด",
+              imageUrl: rice,
+            },
+          ],
         },
-        {
-          pic: "src/assets/ejapic.png",
-          name: "อีจาหมาลำ สุกี้ 3",
-          res_type: "à la carte",
-          rating: 4.8,
-          menu: {
-            Soup: [
-              { item: "Beef Suki", price: 90 },
-              { item: "Herbal Soup", price: 60 },
-            ],
-            Rice: [
-              { item: "Spicy Seafood Suki", price: 100 },
-            ],
-            Snack: [
-              { item: "Clear Broth Suki", price: 65 },
-            ],
-          },
+      },
+      {
+        pic: {shoplogo},
+        name: "Siam Brasserie 3",
+        res_type: "à la carte",
+        rating: 4.8,
+        menu: {
+          Soup: [
+            {
+              item: "Beef Suki",
+              item_th: "สุกี้เนื้อ",
+              price: 90,
+              description: "Tender beef slices in a rich suki broth.",
+              description_th: "เนื้อวัวนุ่มในน้ำซุปสุกี้",
+              imageUrl: rice,
+            },
+            {
+              item: "Herbal Soup",
+              item_th: "ซุปสมุนไพร",
+              price: 60,
+              description: "A light soup with a mix of herbs for added flavor.",
+              description_th: "ซุปเบาที่มีสมุนไพรเพิ่มรสชาติ",
+              imageUrl: rice,
+            },
+          ],
+          Rice: [
+            {
+              item: "Spicy Seafood Suki",
+              item_th: "สุกี้ทะเลรสเผ็ด",
+              price: 100,
+              description: "Seafood suki with a spicy kick.",
+              description_th: "สุกี้ทะเลรสเผ็ด",
+              imageUrl: rice,
+            },
+          ],
+          Snack: [
+            {
+              item: "Clear Broth Suki",
+              item_th: "สุกี้น้ำใส",
+              price: 65,
+              description: "Suki in a clear, light broth.",
+              description_th: "สุกี้ในน้ำใสเบา",
+              imageUrl: rice,
+            },
+          ],
         },
-        {
-          pic: "src/assets/ejapic.png",
-          name: "อีจาหมาลำ สุกี้ 4",
-          res_type: "à la carte",
-          rating: 4.6,
-          menu: {
-            Soup: [
-              { item: "Chicken Noodle Soup", price: 70 },
-              { item: "Herbal Soup", price: 60 },
-            ],
-            Rice: [
-              { item: "Vegetarian Suki", price: 65 },
-            ],
-            Snack: [
-              { item: "Fish Suki", price: 90 },
-            ],
-          },
+      },
+      {
+        pic: {shoplogo},
+        name: "Siam Brasserie 4",
+        res_type: "à la carte",
+        rating: 4.6,
+        menu: {
+          Soup: [
+            {
+              item: "Chicken Noodle Soup",
+              item_th: "ซุปก๋วยเตี๋ยวไก่",
+              price: 70,
+              description: "Comforting chicken noodle soup with herbs.",
+              description_th: "ซุปก๋วยเตี๋ยวไก่ร้อนๆ พร้อมสมุนไพร",
+              imageUrl: rice,
+            },
+            {
+              item: "Herbal Soup",
+              item_th: "ซุปสมุนไพร",
+              price: 60,
+              description: "A light soup with a mix of herbs for added flavor.",
+              description_th: "ซุปเบาที่มีสมุนไพรเพิ่มรสชาติ",
+              imageUrl: rice,
+            },
+          ],
+          Rice: [
+            {
+              item: "Vegetarian Suki",
+              item_th: "สุกี้เจ",
+              price: 65,
+              description: "Vegetarian suki with a variety of vegetables.",
+              description_th: "สุกี้ผักสำหรับคนกินเจ",
+              imageUrl: rice,
+            },
+          ],
+          Snack: [
+            {
+              item: "Fish Suki",
+              item_th: "สุกี้ปลา",
+              price: 90,
+              description: "Fresh fish in suki broth with vegetables.",
+              description_th: "ปลาสดในน้ำซุปสุกี้กับผัก",
+              imageUrl: rice,
+            },
+          ],
         },
-        {
-          pic: "src/assets/ejapic.png",
-          name: "อีจาหมาลำ สุกี้ 5",
-          res_type: "à la carte",
-          rating: 4.9,
-          menu: {
-            Soup: [
-              { item: "Hot Pot", price: 85 },
-            ],
-            Rice: [
-              { item: "Vegetarian Suki", price: 65 },
-            ],
-            Snack: [
-              { item: "Fish Suki", price: 90 },
-            ],
-          },
+      },
+      {
+        pic: {shoplogo},
+        name: "Siam Brasserie 5",
+        res_type: "à la carte",
+        rating: 4.9,
+        menu: {
+          Soup: [
+            {
+              item: "Hot Pot",
+              item_th: "หม้อไฟ",
+              price: 85,
+              description: "A communal hot pot with a variety of ingredients.",
+              description_th: "หม้อไฟที่มีส่วนผสมหลากหลาย",
+              imageUrl: rice,
+            },
+          ],
+          Rice: [
+            {
+              item: "Vegetarian Suki",
+              item_th: "สุกี้เจ",
+              price: 65,
+              description: "Vegetarian suki with a variety of vegetables.",
+              description_th: "สุกี้ผักสำหรับคนกินเจ",
+              imageUrl: rice,
+            },
+          ],
+          Snack: [
+            {
+              item: "Fish Suki",
+              item_th: "สุกี้ปลา",
+              price: 90,
+              description: "Fresh fish in suki broth with vegetables.",
+              description_th: "ปลาสดในน้ำซุปสุกี้กับผัก",
+              imageUrl: rice,
+            },
+          ],
         },
-      ];
-      setTimeout(() => {
-        setRestaurants(data);
-        setLoading(false);
-      }, 300);
-    };
+      },
+    ];
+    setTimeout(() => {
+      setRestaurants(data);
+      setLoading(false);
+    }, 300);
+  });  
 
-    fetchData();
-  }, []);
 
   const selectedRestaurant = restaurants.find(
     (restaurant) => restaurant.name === decodeURIComponent(restaurantName)
@@ -130,21 +272,43 @@ const ResNMenu = () => {
     return <div className="text-center">Loading...</div>;
   }
 
-  const handleFoodClick = (category, item) => {
-    const itemWithId = { ...item, id: `${item.item}-${category}`, quantity: 1 }; // Create a unique ID
-    dispatch(addItem(itemWithId)); // Dispatch action to add item to cart
+  const handleFoodClick = (item) => {
+    const itemWithId = { ...item, id: `${item.item}`, quantity: 1 }; 
+    dispatch(addItem(itemWithId)); 
   };
-  
+
   const handleCartClick = () => {
     setIsCartVisible(!isCartVisible);
   };
+  
   const handleContinueShopping = () => {
     setIsCartVisible(false);
   };
+
   const calculateTotalQuantity = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
-  
+
+  const handleSelectLanguage = (eventKey) => {
+    if (eventKey === "1") {
+      setSelectedLanguage("English");
+    } else if (eventKey === "2") {
+      setSelectedLanguage("Thai");
+    }
+  };
+  const handleSelectCat = (eventKey) => {
+    if (eventKey === "1") {
+      setSelectedCat("Soup");
+    } else if (eventKey === "2") {
+      setSelectedCat("Rice");
+    }
+    else if (eventKey === "3"){
+      setSelectedCat("Snack");
+    }
+    else if (eventKey === "4"){
+      setSelectedCat("All");
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -156,41 +320,131 @@ const ResNMenu = () => {
             </div>
           ) : (
             <>
-              <div className="card" style={{ marginBottom: '2vw', marginTop: '6vw' }}>
-                <h1 className="mb-4" style={{ fontSize: '10vw' }}>{selectedRestaurant.name}</h1>
-                <h2 style={{ fontSize: '5vw' }}>Menu</h2>
+              <div className="card text-white" style={{ marginBottom: '5vw', marginTop: '6vw', background:"#01040F", borderRadius:"5vw" }}>
+                <div className="row d-flex align-items-center justify-content-around" style={{marginBottom: '3vw', marginTop:"2vw"}}>
+                  <div className="col">
+                    <img src={selectedRestaurant.pic} className="image-fluid rounded" style={{ width: "43vw", height: "auto", marginTop:"3vw" }} />
+                  </div>
+                  <div className="col">
+                    <h1 className="mb-4" style={{ fontSize: '7vw' }}>{selectedRestaurant.name}</h1>
+                    <p className="card-text text-white">
+                      <i className="bi bi-star" style={{ color: 'yellow' }}></i> {selectedRestaurant.rating}
+                    </p>
+                    <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"2vw"}}>
+                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                        {selectedLanguage}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item eventKey="1">English</Dropdown.Item>
+                        <Dropdown.Item eventKey="2">Thai</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex justify-content-end" style={{marginTop:"2vw", marginBottom:"5vw"}}>
+                <Dropdown onSelect={handleSelectCat}>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                    {selectedCat}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item eventKey="1">Soup</Dropdown.Item>
+                    <Dropdown.Item eventKey="2">Rice</Dropdown.Item>
+                    <Dropdown.Item eventKey="3">Snack</Dropdown.Item>
+                    <Dropdown.Item eventKey="4">All</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
               <div className="row">
-                {Object.entries(selectedRestaurant.menu).map(([category, items]) => (
-                  <div key={category} className="col-md-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">
-                        <h3>{category}</h3>
+              
+              {selectedCat === "All" ? (
+                <ul className="container-fluid" style={{border:"none"}}>
+                  {Object.values(selectedRestaurant.menu).flat().map((item, index) => (
+                    <li 
+                    key={index} 
+                    className="card d-flex justify-content-between align-items-start text-white"
+                    style={{
+                      border:"none",
+                      marginBottom:"2vw",
+                      background:"none"
+                    }} 
+                  >
+                    <hr className="my-4" style={{
+                        borderTop: '2px solid grey', 
+                        width: '90vw', 
+                        position: 'relative', 
+                        left: '50%', 
+                        transform: 'translateX(-50%)' 
+                    }} />
+                      <div className="row">
+                        <div className="col">
+                          <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                        </div>
+                        <div className="col">
+                          <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
+                          <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
+                          <span className="badge bg-success rounded-pill">${item.price}</span>
+                          <button onClick={() => handleFoodClick(item)}><img src={addCart} alt="" style={{height:"auto", width:"7vw", justifyContent:'flex-end'}}/></button>
+                        </div>
                       </div>
-                      <ul className="card">
-                        {items.map((item, index) => (
-                          <li 
-                            key={index} 
-                            className="card d-flex justify-content-between align-items-center"
-                            onClick={() => handleFoodClick(category, item)} 
-                          >
-                            {item.item}
-                            <span className="badge bg-primary rounded-pill">${item.price}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      ) : (
-        <h2>Restaurant not found</h2>
-      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                Object.entries(selectedRestaurant.menu).map(([category, items]) => {
+                  if (selectedCat === category) {
+                    return (
+                      <div key={category} className="col-12 text-white">
+                        <div className="card-header" style={{border:"none"}}>
+                          <h3 style={{fontSize:"6vw"}}>{category}</h3>
+                        </div>
+                        <ul className="container-fluid" style={{border:"none"}}>
+                          {items.map((item, index) => (
+                            <li 
+                              key={index} 
+                              className="card d-flex justify-content-between align-items-start text-white"
+                              style={{
+                                border:"none",
+                                marginBottom:"2vw",
+                                background:"none"
+                              }} 
+                            >
+                              <hr className="my-4" style={{
+                                  borderTop: '2px solid grey', 
+                                  width: '90vw', 
+                                  position: 'relative', 
+                                  left: '50%', 
+                                  transform: 'translateX(-50%)' 
+                              }} />
+                              <div className="row">
+                                <div className="col">
+                                  <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                                </div>
+                                <div className="col">
+                                  <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
+                                  <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
+                                  <span className="badge bg-success rounded-pill">${item.price}</span>
+                                  <button onClick={() => handleFoodClick(item)}><img src={addCart} alt="" style={{height:"auto", width:"7vw", justifyContent:'flex-end'}}/></button>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  }
+                  return null;
+                })
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    ) : (
+      <h2>Restaurant not found</h2>
+    )}
   
-      <button 
+  <button 
         className="btn btn-success rounded-circle cart-btn" 
         style={{
           position: 'fixed',

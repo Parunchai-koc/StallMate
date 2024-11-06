@@ -5,6 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
+  
+  const calculateItemTotal = (item) => item.price * item.quantity;
+
   const calculateTotalAmount = (items) => {
     return items.reduce((total, item) => {
       return total + item.price * item.quantity; 
@@ -36,7 +39,6 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
 
   return (
     <div className="cart-container text-white">
-      <h2>Total Cart Amount: ${calculateTotalAmount(cartItems).toFixed(2)}</h2>
       <div>
         {cartItems.map((item) => (
           <div className="cart-item text-white" key={item.id}>
@@ -47,6 +49,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
                 <button className='text-white' onClick={() => handleDecrement(item)}>-</button>
                 <span>{item.quantity}</span>
                 <button className='text-white' onClick={() => handleIncrement(item)}>+</button>
+                <h2>Total Amount: ${calculateItemTotal(item).toFixed(2)}</h2>
               </div>
               <button className='text-white' onClick={() => handleRemove(item)}>Remove</button>
             </div>
@@ -56,6 +59,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       <div>
         <button className='text-white' onClick={onContinueShopping}>Continue Shopping</button>
       </div>
+      <h2>Total Cart Amount: ${calculateTotalAmount(cartItems).toFixed(2)}</h2>
     </div>
   );
 };

@@ -10,6 +10,8 @@ import shoplogo from "../assets/shoplogo.png"
 import {Dropdown} from 'react-bootstrap';
 import rice from '../assets/rice.png'
 import addCart from '../assets/addcart.png'
+import arrow from "../assets/arrow-left.svg"
+import search from "../assets/search.svg"
 
 const ResNMenu = () => {
   const navigate = useNavigate();
@@ -21,8 +23,8 @@ const ResNMenu = () => {
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [restaurants, setRestaurants] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState("Language");
-  const [selectedCat, setSelectedCat] = useState("Category");
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [selectedCat, setSelectedCat] = useState("All");
 
   useEffect(() => {
     const data = [
@@ -310,17 +312,32 @@ const ResNMenu = () => {
     }
   };
 
+  const handleBackBtn = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="container-fluid">
+      <div className="container-fluid">
       {selectedRestaurant ? (
-        <div>
+        <div style={{marginTop:"20vw"}}>
           {isCartVisible ? (
             <div className="cart-modal">
+              <div
+                className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
+                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"5vw" }}
+            >
+                <img
+                    src={arrow}
+                    alt=""
+                    onClick={handleContinueShopping}
+                />
+            </div>
               <CartItem onContinueShopping={handleContinueShopping} cartItems={cartItems} />
             </div>
           ) : (
             <>
-              <div className="card text-white" style={{ marginBottom: '5vw', marginTop: '6vw', background:"#01040F", borderRadius:"5vw" }}>
+              <Header pageTitle={""} />
+              <div className="card text-white" style={{ marginBottom: '6vw', marginTop: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw"}}>
                 <div className="row d-flex align-items-center justify-content-around" style={{marginBottom: '3vw', marginTop:"2vw"}}>
                   <div className="col">
                     <img src={selectedRestaurant.pic} className="image-fluid rounded" style={{ width: "43vw", height: "auto", marginTop:"3vw" }} />
@@ -342,9 +359,10 @@ const ResNMenu = () => {
                   </div>
                 </div>
               </div>
-              <div className="d-flex justify-content-end" style={{marginTop:"2vw", marginBottom:"5vw"}}>
-                <Dropdown onSelect={handleSelectCat}>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+              <div className="d-flex justify-content-end align-items-center" style={{marginTop:"2vw",  background:'black ', borderRadius:"2vw", padding:"1.5vw", marginBottom:"6vw"}}>
+                <p className='text-white' style={{marginRight:"5vw", fontSize:"4vw", marginTop:"2.6vw", fontWeight:"500"}}>Category</p>
+                <Dropdown onSelect={handleSelectCat} style={{marginRight:"3vw"}}>
+                  <Dropdown.Toggle variant="success" style={{fontSize:"3.5vw"}}>
                     {selectedCat}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -358,36 +376,45 @@ const ResNMenu = () => {
               <div className="row">
               
               {selectedCat === "All" ? (
-                <ul className="container-fluid" style={{border:"none"}}>
-                  {Object.values(selectedRestaurant.menu).flat().map((item, index) => (
-                    <li 
-                    key={index} 
-                    className="card d-flex justify-content-between align-items-start text-white"
-                    style={{
-                      border:"none",
-                      marginBottom:"2vw",
-                      background:"none"
-                    }} 
-                  >
-                    <hr className="my-4" style={{
-                        borderTop: '2px solid grey', 
-                        width: '90vw', 
-                        position: 'relative', 
-                        left: '50%', 
-                        transform: 'translateX(-50%)' 
-                    }} />
-                      <div className="row">
-                        <div className="col">
-                          <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
-                        </div>
-                        <div className="col">
-                          <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
-                          <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
-                          <span className="badge bg-success rounded-pill">${item.price}</span>
-                          <button onClick={() => handleFoodClick(item)}><img src={addCart} alt="" style={{height:"auto", width:"7vw", justifyContent:'flex-end'}}/></button>
-                        </div>
-                      </div>
-                    </li>
+                <ul className="container-fluid" style={{border: "none"}}>
+                  {Object.entries(selectedRestaurant.menu).map(([category, items]) => (
+                    <div key={category}>
+                      <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw"}}>{category}</h3> {/* Category header */}
+                      {items.map((item, index) => (
+                        <li
+                          key={index}
+                          className="card d-flex justify-content-between align-items-start text-white"
+                          style={{
+                            border: "none",
+                            marginBottom: "2vw",
+                            background: "none"
+                          }}
+                        >
+                          <hr className="my-4" style={{
+                            borderTop: '2px solid grey',
+                            width: '90vw',
+                            position: 'relative',
+                            left: '50%',
+                            transform: 'translateX(-50%)'
+                          }} />
+                          <div className="row d-flex align-items-center">
+                            <div className="col">
+                              <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                            </div>
+                            <div className="col">
+                              <p style={{ fontSize: "5vw", fontWeight: "600" }}>
+                                {selectedLanguage === "English" ? item.item : item.item_th}
+                              </p>
+                              <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
+                              <span className="badge bg-success rounded-pill">${item.price}</span>
+                              <button onClick={() => handleFoodClick(item)}>
+                                <img src={addCart} alt="" style={{height: "auto", width: "7vw", justifyContent: 'flex-end'}}/>
+                              </button>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </div>
                   ))}
                 </ul>
               ) : (

@@ -8,7 +8,7 @@ const NearMe = () => {
       <Header pageTitle={"Near Me"} />
       <div className="container-fluid">
         
-        <div style={{ marginTop: "20vw" }}>
+        <div style={{ marginTop: "19vw" }}>
           <RestaurantList />
         </div>
       </div>

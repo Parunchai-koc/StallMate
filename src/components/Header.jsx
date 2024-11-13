@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import arrow from "../assets/arrow-left.svg"
+import search from "../assets/search.svg"
 const Header = ({ pageTitle }) => {
     const navigate = useNavigate();
     const [searchVisible, setSearchVisible] = useState(false);
     const [query, setQuery] = useState("");
 
     const handleBackBtn = () => {
-        navigate('/home');
+        navigate(-1);
     };
 
     const handleSearchBtn = () => {
@@ -24,20 +26,18 @@ const Header = ({ pageTitle }) => {
     return (
         <div className="container-fluid">
             <div
-                className="container-fluid d-flex fixed-top justify-content-between align-items-center text-light w-100"
-                style={{ height: "20vw", zIndex: 1000, background: "#191A1F" }}
+                className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
+                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
             >
                 <img
-                    className="ms-2"
-                    src="src/assets/arrow-left.svg"
-                    alt="arrow-left-icon"
+                    src={arrow}
+                    alt=""
                     onClick={handleBackBtn}
                 />
-                <h2 className="mx-1">{pageTitle}</h2>
+                <h2>{pageTitle}</h2>
                 <img 
-                    className="me-2" 
-                    src="src/assets/search.svg" 
-                    alt="search-icon" 
+                    src={search} 
+                    alt="" 
                     onClick={handleSearchBtn}
                 />
             </div>
@@ -48,11 +48,11 @@ const Header = ({ pageTitle }) => {
                         width: '85vw', 
                         marginLeft: 'auto', 
                         marginRight: 'auto', 
-                        marginTop: '130vw',  
+                        marginTop: '18vw',  
                     }}
                 >
                     <form onSubmit={handleSubmit} className='w-100 d-flex justify-content-between'>
-                        <div className="input-group w-100">
+                        <div className="input-group">
                             <span className="input-group-text" style={{ background: '#0E162C', border: 'none' }}>
                                 <i className="bi bi-search" style={{ color: 'white' }}></i>
                             </span>

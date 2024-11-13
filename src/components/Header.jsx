@@ -27,7 +27,7 @@ const Header = ({ pageTitle }) => {
         <div className="container-fluid">
             <div
                 className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
-                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"2vw" }}
+                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
             >
                 <img
                     src={arrow}

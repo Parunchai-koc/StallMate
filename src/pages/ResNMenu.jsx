@@ -17,6 +17,7 @@ const ResNMenu = () => {
   const navigate = useNavigate();
   const { restaurantName } = useParams();
   const dispatch = useDispatch(); 
+  const [selectedItem, setSelectedItem] = useState(null);
   const cartItems = useSelector((state) => state.cart.items); 
   const amount = useSelector(state => state.cart.amount);
   const [loading, setLoading] = useState(true);
@@ -271,12 +272,29 @@ const ResNMenu = () => {
   );
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center text white">Loading...</div>;
   }
 
   const handleFoodClick = (item) => {
-    const itemWithId = { ...item, id: `${item.item}`, quantity: 1 }; 
-    dispatch(addItem(itemWithId)); 
+    console.log(item); 
+    setSelectedItem({ ...item, quantity: 1 });
+  };
+  const confirmAddToCart = () => {
+    dispatch(addItem({
+      ...selectedItem, 
+      id: selectedItem.item, 
+      note: selectedItem.note,
+      price: selectedItem.price, 
+      quantity: selectedItem.quantity
+    }));
+    setSelectedItem(null);
+  };
+  
+  const handleQuantityChange = (newQuantity) => {
+    setSelectedItem((prevItem) => ({
+      ...prevItem,
+      quantity: Math.max(1, newQuantity),
+    }));
   };
 
   const handleCartClick = () => {
@@ -312,9 +330,6 @@ const ResNMenu = () => {
     }
   };
 
-  const handleBackBtn = () => {
-    navigate(-1);
-  };
 
   return (
       <div className="container-fluid">
@@ -333,6 +348,95 @@ const ResNMenu = () => {
                 />
             </div>
               <CartItem onContinueShopping={handleContinueShopping} cartItems={cartItems} />
+            </div>
+          ) : selectedItem ? (
+            <div className="item-detail-modal">
+              <div className="card text-white" style={{ marginBottom: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw"}}>
+                <div className="row d-flex align-items-center justify-content-around" style={{marginBottom: '3vw', marginTop:"2vw"}}>
+                  <div className="col">
+                    <img src={selectedItem.imageUrl} className="image-fluid rounded" style={{ width: "50vw", height: "auto", marginTop:"3vw" }} />
+                  </div>
+                  <div className="col align-items-center">
+                    <h2 className='text-white' style={{fontSize:"6vw"}}>{selectedLanguage == 'English'? selectedItem.item : selectedItem.item_th}</h2>
+                    <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"6vw"}}>
+                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                        {selectedLanguage}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item eventKey="1">English</Dropdown.Item>
+                        <Dropdown.Item eventKey="2">Thai</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <span className="badge bg-success rounded-pill" style={{marginTop:"6vw", fontSize:"4vw"}}>${selectedItem.price}</span>
+                  </div>
+                </div>
+              </div>
+              <p className='text-white'>Description : {selectedLanguage == 'English'? selectedItem.description : selectedItem.description_th}</p>
+              <div style={{ marginTop: "4vw" }}>
+                <p className='text-white display-5'>Notes</p>
+                <hr className="my-4" style={{
+                            borderTop: '2px solid grey',
+                            width: '90vw',
+                            position: 'relative',
+                            left: '50%',
+                            transform: 'translateX(-50%)'
+                          }} />
+                <textarea
+                  className="form-control table-form"
+                  placeholder="Add a note for the seller"
+                  rows="1"
+                  value={selectedItem.note || ''}
+                  onChange={(e) => setSelectedItem({ ...selectedItem, note: e.target.value })}
+                  style={{ backgroundColor: 'black', color: 'white', borderColor: 'gray' }}
+                />
+                <hr className="my-4" style={{
+                            borderTop: '2px solid grey',
+                            width: '90vw',
+                            position: 'relative',
+                            left: '50%',
+                            transform: 'translateX(-50%)'
+                          }} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '40vw', justifyContent:"center" }}> 
+                <button className='bg-success'
+                  onClick={() => handleQuantityChange(selectedItem.quantity - 1)}
+                  style={{
+                    padding: '1vw',
+                    width:"8vw",
+                    height:"auto",
+                    backgroundColor: '#6c757d',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '50%',
+                    marginRight: '3vw'
+                  }}
+                  disabled={selectedItem.quantity <= 1}
+                >
+                  -
+                </button>
+                
+                <span className='text-white' style={{ fontSize: '6vw', margin: '0 10px' }}>{selectedItem.quantity}</span>
+                
+                <button className='bg-success'
+                  onClick={() => handleQuantityChange(selectedItem.quantity + 1)}
+                  style={{
+                    padding: '1vw',
+                    width:"8vw",
+                    height:"auto",
+                    backgroundColor: '#6c757d',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '50%',
+                    marginLeft: '3vw'  
+                  }}
+                >
+                  +
+                </button>
+              </div>
+              <div className="row align-items-center" style={{ marginTop: '4vw' }}>
+              <button className='text-white bg-success' style={{marginBottom:"4vw"}} onClick={confirmAddToCart} >Add to Cart</button>
+              <button className='text-white bg-danger' onClick={() => setSelectedItem(null) } >Cancel</button>
+              </div>
             </div>
           ) : (
             <>
@@ -379,7 +483,7 @@ const ResNMenu = () => {
                 <ul className="container-fluid" style={{border: "none"}}>
                   {Object.entries(selectedRestaurant.menu).map(([category, items]) => (
                     <div key={category}>
-                      <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw"}}>{category}</h3> {/* Category header */}
+                      <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw"}}>{category}</h3>
                       {items.map((item, index) => (
                         <li
                           key={index}
@@ -389,6 +493,7 @@ const ResNMenu = () => {
                             marginBottom: "2vw",
                             background: "none"
                           }}
+                          onClick={() => handleFoodClick(item)}
                         >
                           <hr className="my-4" style={{
                             borderTop: '2px solid grey',
@@ -397,21 +502,19 @@ const ResNMenu = () => {
                             left: '50%',
                             transform: 'translateX(-50%)'
                           }} />
-                          <div className="row d-flex align-items-center">
-                            <div className="col">
-                              <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                          <div className="row">
+                                <div className="col">
+                                  <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                                </div>
+                                <div className="col" style={{ display: 'flex', flexDirection: 'column', marginTop:"4vw" }}>
+                                  <div className="row">
+                                    <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
+                                    <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"4vw" }}>
+                                      <span className="badge bg-success rounded-pill" style={{marginRight:"10vw"}}>{item.price} THB</span> 
+                                    </div>
+                                  </div>
+                                </div>
                             </div>
-                            <div className="col">
-                              <p style={{ fontSize: "5vw", fontWeight: "600" }}>
-                                {selectedLanguage === "English" ? item.item : item.item_th}
-                              </p>
-                              <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
-                              <span className="badge bg-success rounded-pill">${item.price}</span>
-                              <button onClick={() => handleFoodClick(item)}>
-                                <img src={addCart} alt="" style={{height: "auto", width: "7vw", justifyContent: 'flex-end'}}/>
-                              </button>
-                            </div>
-                          </div>
                         </li>
                       ))}
                     </div>
@@ -435,6 +538,7 @@ const ResNMenu = () => {
                                 marginBottom:"2vw",
                                 background:"none"
                               }} 
+                              onClick={() => handleFoodClick(item)}
                             >
                               <hr className="my-4" style={{
                                   borderTop: '2px solid grey', 
@@ -447,13 +551,15 @@ const ResNMenu = () => {
                                 <div className="col">
                                   <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
                                 </div>
-                                <div className="col">
-                                  <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
-                                  <p>{selectedLanguage === "English" ? item.description : item.description_th}</p>
-                                  <span className="badge bg-success rounded-pill">${item.price}</span>
-                                  <button onClick={() => handleFoodClick(item)}><img src={addCart} alt="" style={{height:"auto", width:"7vw", justifyContent:'flex-end'}}/></button>
+                                <div className="col" style={{ display: 'flex', flexDirection: 'column', marginTop:"4vw" }}>
+                                  <div className="row">
+                                    <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
+                                    <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"4vw" }}>
+                                      <span className="badge bg-success rounded-pill" style={{marginRight:"10vw"}}>{item.price} THB</span> 
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
+                            </div>
                             </li>
                           ))}
                         </ul>
@@ -464,6 +570,40 @@ const ResNMenu = () => {
                 })
               )}
             </div>
+            <button 
+              className="btn btn-success rounded-circle cart-btn" 
+              style={{
+                position: 'fixed',
+                bottom: '5vw',
+                right: '3vw',
+                width: '15vw',
+                height: '15vw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '5vw',
+              }}
+              onClick={handleCartClick}
+            >
+              <div style={{ position: 'relative' }}>
+                <i className="bi bi-cart" style={{ color: 'white', fontSize:'7vw' }}></i>
+                <i className="rounded-circle" style={{
+                  position: 'absolute',
+                  top: '-0.8vw',
+                  right: '-0.8vw',
+                  color: 'white',
+                  background: 'red',
+                  width: '5vw',
+                  height: '5vw',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '3vw',
+                }}>
+                  {calculateTotalQuantity()}
+                </i>
+              </div>
+            </button>
           </>
         )}
       </div>
@@ -471,40 +611,7 @@ const ResNMenu = () => {
       <h2>Restaurant not found</h2>
     )}
   
-  <button 
-        className="btn btn-success rounded-circle cart-btn" 
-        style={{
-          position: 'fixed',
-          bottom: '5vw',
-          right: '3vw',
-          width: '15vw',
-          height: '15vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '5vw',
-        }}
-        onClick={handleCartClick}
-      >
-        <div style={{ position: 'relative' }}>
-          <i className="bi bi-cart" style={{ color: 'white', fontSize:'7vw' }}></i>
-          <i className="rounded-circle" style={{
-            position: 'absolute',
-            top: '-0.8vw',
-            right: '-0.8vw',
-            color: 'white',
-            background: 'red',
-            width: '5vw',
-            height: '5vw',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontSize: '3vw',
-          }}>
-            {calculateTotalQuantity()}
-          </i>
-        </div>
-      </button>
+  
     </div>
   );
   

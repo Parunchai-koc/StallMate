@@ -15,6 +15,7 @@ import ResNMenu from './pages/ResNMenu';
 import CartItem from './components/CartItem';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Loading from './components/Loading'
 
 function App() {
   const { username } = useParams();
@@ -29,7 +30,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         
         <Route 
-          path="/home/:username" 
+          path="/home" 
           element={isLoggedIn ? <HomeWithNavbar component={<Home />} /> : <Navigate to="/login" />} 
         />
         <Route 
@@ -59,6 +60,10 @@ function App() {
         <Route 
           path="/cartitem" 
           element={isLoggedIn ? <CartItem /> : <Navigate to='/login' />} 
+        />
+        <Route 
+          path="/checkingout" 
+          element={isLoggedIn ? <Loading /> : <Navigate to='/login' />} 
         />
       </Routes>
     </Router>

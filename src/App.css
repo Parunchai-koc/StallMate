@@ -46,13 +46,11 @@ body {
 }
 @media (max-width: 768px) {
   #root {
-    padding: 1rem;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   #root {
-    padding: 2rem;
   }
 }
 
@@ -63,14 +61,9 @@ body {
   }
 
   #root {
-    padding: 2rem;
     min-height: 100vh;
   }
 }
-
-
-
-
 
 .read-the-docs {
   color: #888;

@@ -1,21 +1,14 @@
 import React from "react";
 import RestaurantList from "../components/RestaurantList";
 import Header from "../components/Header";
-
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 const NearMe = () => {
   return (
     <div>
       <Header pageTitle={"Near Me"} />
-      <div style={{ marginRight: "65vw", marginTop: "5vw" }}>
-        <button
-          className="btn btn-success btn-sm rounded-pill"
-          style={{ color: "black", width: "20vw" }}
-        >
-          Sort By
-        </button>
-      </div>
       <div className="container-fluid">
-        <div style={{ marginTop: "50vw" }}>
+        
+        <div style={{ marginTop: "19vw" }}>
           <RestaurantList />
         </div>
       </div>

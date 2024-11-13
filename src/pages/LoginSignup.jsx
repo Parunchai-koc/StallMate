@@ -10,9 +10,9 @@ import aplogo from "../assets/apple-button.png";
 const LoginSignup = () => {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate("/home");
-  };
+    const handleLogin = () => {
+        window.location.href = 'http://localhost:3000/auth/customer/google';
+    };
 
   const handleGoogleLogin = () => {
     console.log("Google login clicked");

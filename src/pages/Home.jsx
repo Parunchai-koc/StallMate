@@ -1,27 +1,29 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import pfImg from "../assets/profile.png";
-import ntImg from "../assets/bell.png";
-import offBurg from "../assets/off_burg.jpg";
-import nearMe from "../assets/near.png";
-import burg from "../assets/hambur.png";
-import pizz from "../assets/pizza.png";
-import nood from "../assets/nood.png";
-import chic from "../assets/chic.png";
-import vege from "../assets/spoonFork.png";
-import cake from "../assets/cake.png";
-import others from "../assets/kanom.png";
-import "./Home.css";
+import React from 'react';
+import { useState } from 'react';
+import { Link,useParams } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import pfImg from '../assets/profile.png';
+import ntImg from '../assets/bell.png';
+import offBurg from '../assets/off_burg.jpg';
+import nearMe from '../assets/near.png';
+import burg from '../assets/hambur.png';
+import pizz from '../assets/pizza.png';
+import nood from '../assets/nood.png';
+import chic from '../assets/chic.png';
+import vege from '../assets/spoonFork.png';
+import cake from '../assets/cake.png';
+import others from '../assets/kanom.png';
+import './Home.css'; 
 const Home = () => {
-  const [query, setQuery] = useState("");
-
+  const [query, setQuery] = useState('');
+  const { username } = useParams();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Search Query:", query);
-    setQuery("");
+    console.log('Search Query:', query);
+    setQuery('');
+    console.log(typeof(username));
   };
+  
 
   return (
     <div className="container-fluid">
@@ -42,18 +44,8 @@ const Home = () => {
               }}
             />
             <div className="d-flex flex-column justify-content-center">
-              <p
-                className="mx-2 my-2"
-                style={{ fontSize: "2.3vw", fontWeight: "300" }}
-              >
-                Customer
-              </p>
-              <p
-                className="h3 mx-2"
-                style={{ fontWeight: "300", fontSize: "3.7vw" }}
-              >
-                John K Square
-              </p>
+              <p className="mx-2 my-2" style={{ fontSize: '2.3vw', fontWeight: '300' }}>Customer</p> 
+              <p className="h3 mx-2" style={{ fontWeight: '300', fontSize: '3.5vw' }}>{username}</p>
             </div>
             <img
               src={ntImg}

@@ -1,12 +1,16 @@
-.mockup {
-
+.mockup > h5 {
+  font-weight: bold;
 }
 .mockup > div > span > p {
   margin-bottom: 0;
+  margin-left: 0.5rem;
+  font-weight: bold;
 }
 
 .mockup > hr {
-  color: white;
+  border: none;
+  height: 3px;
+  background-color: white;
   margin-top: 0;
   margin-bottom: 10px;
 }

@@ -70,7 +70,7 @@ const Profile = () => {
               className="container d-flex justify-content-center align-items-center border rounded-pill mb-2"
               style={{ height: "45px" }}
             >
-              <p className="mb-0 me-3">Thanakron</p>
+              <p className="mb-0 me-3">David Beckham</p>
               <i onClick={handleChangeName}>{PEN_ICON}</i>
             </div>
             <div

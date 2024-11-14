@@ -4,16 +4,13 @@ import { Link,useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import pfImg from '../assets/profile.png';
 import ntImg from '../assets/bell.png';
-import offBurg from '../assets/off_burg.jpg';
-import nearMe from '../assets/near.png';
-import burg from '../assets/hambur.png';
-import pizz from '../assets/pizza.png';
-import nood from '../assets/nood.png';
-import chic from '../assets/chic.png';
-import vege from '../assets/spoonFork.png';
-import cake from '../assets/cake.png';
-import others from '../assets/kanom.png';
+import burghome from '../assets/burghome.png'
 import './Home.css'; 
+import cakeh from '../assets/cakedhome.png';
+import grill from '../assets/grilledchic.png';
+import salad from '../assets/salad.png';
+import siam from '../assets/siam.png';
+
 const Home = () => {
   const [query, setQuery] = useState('');
   const { username } = useParams();
@@ -34,10 +31,10 @@ const Home = () => {
         <div className='container-fluid d-flex justify-content-center align-items-center'>
           <div className="container-fluid d-flex flex-row justify-content-around align-items-center">
             <img src={pfImg} alt="" 
-                 style={{ width: '11.6vw', height: '11.6vw', objectFit: 'cover', marginLeft: '1.5vw' }} 
+                 style={{ width: '11.6vw', height: '11.6vw', objectFit: 'cover' }} 
             />
-            <div className="d-flex flex-column justify-content-center">
-              <p className="mx-2 my-2" style={{ fontSize: '2.3vw', fontWeight: '300' }}>Customer</p> 
+            <div className="d-flex flex-column">
+              <p className="mx-2 my-2" style={{ fontSize: '5vw', fontWeight: '300'}}>Customer</p> 
               <p className="h3 mx-2" style={{ fontWeight: '300', fontSize: '3.5vw' }}>{username}</p>
             </div>
             <img src={ntImg} alt="" 
@@ -67,13 +64,6 @@ const Home = () => {
       </div>
 
       <div style={{ height: '25vw' }}></div> 
-
-      <div className="container-fluid d-flex justify-content-between mt-3">
-          <p className='text-white'>Special offers</p>
-          <a className='text-success' href="">See more...</a>
-      </div>
-
-
       <div className="container-fluid d-flex justify-content-center align-items-center my-3">
           <button 
               style={{
@@ -86,43 +76,162 @@ const Home = () => {
               }}
           >
               <img 
-                  src={offBurg} 
+                  src={burghome} 
                   alt="" 
                   style={{
-                      width: '100%',          
-                      height: '100%',         
-                      borderRadius:'20%'     
+                      width: '80vw',
+                      height: 'auto',
+                      borderRadius:'5vw',
+
                   }}
               />
           </button>
       </div>
-
-    
-      <div className="row d-flex justify-content-center">
-        {[
-          { img: nearMe, label: 'Near Me', link: '/nearme' },
-          { img: burg, label: 'Burger', link: '/burger' },
-          { img: pizz, label: 'Pizza', link: '/pizza' },
-          { img: nood, label: 'Noodle', link: '/noodle' },
-          { img: chic, label: 'Chicken', link: '/chicken' },
-          { img: vege, label: 'Vegetable', link: '/vegetable' },
-          { img: cake, label: 'Cake', link: '/cake' },
-          { img: others, label: 'Others', link: '/others' }
-        ].map((item, index) => (
-          <div key={index} className="col-3 d-flex flex-column align-items-center mb-n1">
-            <Link to={item.link} style={{ textDecoration: 'none' }}>
-              <button style={{ background: 'transparent', border: 'none', textAlign: 'center' }}>
-                <img src={item.img} alt={item.label} style={{ width: '9.3vw', height: 'auto' }} />
-                <p className='text-white' style={{ fontWeight: '100', fontSize: '3vw', marginTop: '1vw' }}>{item.label}</p>
-              </button>
-            </Link>
+      <div className="container-fluid d-flex justify-content-between" style={{ fontSize:"4vw"}}>
+          <p className='text-white'>Favorites</p>
+          <a className='text-success' href="">See all</a>
+      </div>
+      <div className="row" style={{marginTop:"8vw"}}>
+        <div className="col d-flex justify-content-around">
+          <div style={{ position: "relative", width: "45vw", height: "50vw" }}>
+            <div className="card" style={{ width: "100%", height: "100%", borderRadius: "7vw", background: 'white' }}>
+              <img 
+                src={cakeh} 
+                alt="" 
+                style={{ 
+                  width: "38vw",
+                  height: "38vw", 
+                  objectFit: "cover", 
+                  position: "absolute", 
+                  top: "-20%",  
+                  left: "50%", 
+                  transform: "translate(-50%, 0)" 
+                }} 
+              />
+              <div style={{ 
+                position: "absolute", 
+                bottom: "2vw", 
+                left: "2vw", 
+                right: "2vw", 
+                color: "white", 
+                background: "none", 
+                borderRadius: "1vw", 
+                padding: "1vw", 
+                textAlign: "start",
+                width:"20vw"
+              }}>
+                <p style={{ color: "black", fontSize: "4.5vw", fontWeight:"500" }}>Cakes Lover</p>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
+        <div className="col d-flex justify-content-around">
+          <div style={{ position: "relative", width: "45vw", height: "50vw" }}>
+            <div className="card" style={{ width: "100%", height: "100%", borderRadius: "7vw", background: 'white' }}>
+              <img 
+                src={siam} 
+                alt="" 
+                style={{ 
+                  width: "41vw",
+                  height: "41vw", 
+                  objectFit: "cover", 
+                  position: "absolute", 
+                  top: "-24%",  
+                  left: "50%", 
+                  transform: "translate(-50%, 0)" 
+                }} 
+              />
+              <div style={{ 
+                position: "absolute", 
+                bottom: "2vw", 
+                left: "2vw", 
+                right: "2vw", 
+                color: "white", 
+                background: "none", 
+                borderRadius: "1vw", 
+                padding: "1vw", 
+                textAlign: "start",
+                width:"25vw"
+              }}>
+                <p style={{ color: "black", fontSize: "4.5vw", fontWeight:"500" }}>Siam 
+                Brasserie</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="container-fluid d-flex justify-content-between mt-3">
-          <p className='text-white'>Weekly Special</p>
+      <div className="container-fluid d-flex justify-content-between" style={{marginTop:"6vw", fontSize:"4vw"}}>
+          <p className='text-white'>Order History</p>
           <a className='text-success' href="">See all</a>
+      </div>
+      <div className="row" style={{marginTop:"8vw"}}>
+        <div className="col d-flex justify-content-around">
+          <div style={{ position: "relative", width: "45vw", height: "50vw" }}>
+            <div className="card" style={{ width: "100%", height: "100%", borderRadius: "7vw", background: 'white' }}>
+              <img 
+                src={salad} 
+                alt="" 
+                style={{ 
+                  width: "38vw",
+                  height: "38vw", 
+                  objectFit: "cover", 
+                  position: "absolute", 
+                  top: "-20%",  
+                  left: "48%", 
+                  transform: "translate(-50%, 0)" 
+                }} 
+              />
+              <div style={{ 
+                position: "absolute", 
+                bottom: "2vw", 
+                left: "2vw", 
+                right: "2vw", 
+                color: "white", 
+                background: "none", 
+                borderRadius: "1vw", 
+                padding: "1vw", 
+                textAlign: "start",
+                width:"25vw"
+              }}>
+                <p style={{ color: "black", fontSize: "4.5vw", fontWeight:"500" }}>Prawn mix salad</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col d-flex justify-content-around">
+          <div style={{ position: "relative", width: "45vw", height: "50vw" }}>
+            <div className="card" style={{ width: "100%", height: "100%", borderRadius: "7vw", background: 'white' }}>
+              <img 
+                src={grill} 
+                alt="" 
+                style={{ 
+                  width: "41vw",
+                  height: "41vw", 
+                  objectFit: "cover", 
+                  position: "absolute", 
+                  top: "-20%",  
+                  left: "50%", 
+                  transform: "translate(-50%, 0)" 
+                }} 
+              />
+              <div style={{ 
+                position: "absolute", 
+                bottom: "2vw", 
+                left: "2vw", 
+                right: "2vw", 
+                color: "white", 
+                background: "none", 
+                borderRadius: "1vw", 
+                padding: "1vw", 
+                textAlign: "start",
+                width:"25vw"
+              }}>
+                <p style={{ color: "black", fontSize: "4.5vw", fontWeight:"500" }}>BBQ Chicken</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

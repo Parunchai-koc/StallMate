@@ -5,7 +5,6 @@ import { useMemo } from 'react';
 import LoginSignup from './pages/LoginSignup';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
-import Qrcode from './pages/Qrcode';
 import Profile from './pages/Profile';
 import Setting from './pages/Setting';
 import Wallet from './pages/Wallet';
@@ -32,10 +31,6 @@ function App() {
         <Route 
           path="/home" 
           element={isLoggedIn ? <HomeWithNavbar component={<Home />} /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/qr" 
-          element={isLoggedIn ? <HomeWithNavbar component={<Qrcode />} /> : <Navigate to="/login" />} 
         />
         <Route 
           path="/profile" 

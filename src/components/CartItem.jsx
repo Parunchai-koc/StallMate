@@ -44,9 +44,15 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
   const handleCheckout = async () => {
     navigate('/checkingout');
     
+    const simplifiedCartItems = cartItems.map(item => ({
+      id: item.id,
+      note: item.note,
+      itemTotal: (item.price * item.quantity).toFixed(2),
+      quantity: item.quantity,
+    }));
     // Prepare the order data
     const orderData = {
-      cartItems: cartItems,
+      cartItems: simplifiedCartItems,
       totalAmount: calculateTotalAmount(cartItems).toFixed(2),
       tableNumber: tableNumber,
     };

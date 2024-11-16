@@ -12,6 +12,7 @@ import rice from '../assets/rice.png'
 import addCart from '../assets/addcart.png'
 import arrow from "../assets/arrow-left.svg"
 import search from "../assets/search.svg"
+import langIcon from '../assets/lang.png'
 
 const ResNMenu = () => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const ResNMenu = () => {
   const dispatch = useDispatch(); 
   const [selectedItem, setSelectedItem] = useState(null);
   const cartItems = useSelector((state) => state.cart.items); 
-  const amount = useSelector(state => state.cart.amount);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -359,7 +359,12 @@ const ResNMenu = () => {
                   <div className="col align-items-center">
                     <h2 className='text-white' style={{fontSize:"6vw"}}>{selectedLanguage == 'English'? selectedItem.item : selectedItem.item_th}</h2>
                     <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"6vw"}}>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                      <Dropdown.Toggle id="dropdown-basic" style={{fontSize:"3.5vw", display: "flex", alignItems: "center",color:"black", fontWeight:600,background:"#4CF986"}}>
+                        <img 
+                          src={langIcon}
+                          alt="Language Icon" 
+                          style={{ width: "5vw", height: "5vw", marginRight: "1vw" }} 
+                        />
                         {selectedLanguage}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -452,7 +457,12 @@ const ResNMenu = () => {
                       <i className="bi bi-star" style={{ color: 'yellow' }}></i> {selectedRestaurant.rating}
                     </p>
                     <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"2vw"}}>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                      <Dropdown.Toggle  id="dropdown-basic" style={{fontSize:"3.5vw", color:"black", fontWeight:600,background:"#4CF986"}}>
+                        <img 
+                            src={langIcon}
+                            alt="Language Icon" 
+                            style={{ width: "5vw", height: "5vw", marginRight: "1vw" }} 
+                        />
                         {selectedLanguage}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -466,7 +476,7 @@ const ResNMenu = () => {
               <div className="d-flex justify-content-end align-items-center" style={{marginLeft:"1vw",marginRight:"1vw", marginTop:"2vw",  background:'black ', borderRadius:"2vw", padding:"1.5vw", marginBottom:"6vw"}}>
                 <p className='text-white' style={{marginRight:"5vw", fontSize:"4vw", marginTop:"2.6vw", fontWeight:"500"}}>Category</p>
                 <Dropdown onSelect={handleSelectCat} style={{marginRight:"3vw"}}>
-                  <Dropdown.Toggle variant="success" style={{fontSize:"3.5vw"}}>
+                  <Dropdown.Toggle style={{fontSize:"3.5vw", color:"black", fontWeight:600,background:"#4CF986"}}>
                     {selectedCat}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>

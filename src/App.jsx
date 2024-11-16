@@ -12,6 +12,9 @@ import Navbar from './components/Navbar';
 import NearMe from './pages/NearMe';
 import ResNMenu from './pages/ResNMenu';
 import CartItem from './components/CartItem';
+import RoleSelect from './pages/RoleSelect';
+import LoginStall from './stallPages/LoginStall';
+import StallMenu from './stallPages/StallMenu';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
@@ -24,13 +27,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginSignup />} />
+        <Route path="/" element={<RoleSelect />} />
         <Route path="/login" element={<LoginSignup />} />
+        <Route path="/loginStall" element={<LoginStall />} />
         <Route path="/signup" element={<Signup />} />
         
         <Route 
           path="/home" 
           element={isLoggedIn ? <HomeWithNavbar component={<Home />} /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/stallMenu" 
+          element={isLoggedIn ? <StallMenu /> : <Navigate to="/login" />} 
         />
         <Route 
           path="/profile" 

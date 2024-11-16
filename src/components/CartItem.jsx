@@ -1,11 +1,12 @@
 import {React, useState} from 'react';
-import { useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItem, updateQuantity, clearCart } from './CartSlice'; 
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import bin from "../assets/remove.png";
 import plus from "../assets/plus.png";
 import minus from "../assets/minus.png";
+import axios from 'axios';
 
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
@@ -13,11 +14,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
   const [tableNumber, setTableNumber] = useState('');
   const calculateItemTotal = (item) => item.price * item.quantity;
 
-  const calculateTotalAmount = (items) => {
-    return items.reduce((total, item) => {
-      return total + item.price * item.quantity; 
-    }, 0);
-  };
+  const calculateTotalAmount = useSelector(state => state.cart.amount);
 
   const handleIncrement = (item) => {
     console.log("Incrementing:", item);
@@ -42,34 +39,32 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
   };
   
   const handleCheckout = async () => {
-    navigate('/checkingout');
+    event.preventDefault();
     
     const simplifiedCartItems = cartItems.map(item => ({
       id: item.id,
       note: item.note,
-      itemTotal: (item.price * item.quantity).toFixed(2),
+      price: item.price,
+      totalPrice: (item.price * item.quantity).toFixed(2),
       quantity: item.quantity,
     }));
-    // Prepare the order data
     const orderData = {
       cartItems: simplifiedCartItems,
-      totalAmount: calculateTotalAmount(cartItems).toFixed(2),
+      totalAmount: calculateTotalAmount.toFixed(2),
       tableNumber: tableNumber,
     };
   
-    // Log the order data to the console
     console.log('Order Data:', orderData);
     
-    /*
     try {
-      // Make the API call to the backend
-      const response = await axios.post('/api/orders', orderData); // Replace with your actual backend URL
+      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', orderData);
+      dispatch(clearCart());
       console.log('Order placed successfully:', response.data);
-      // You can clear the cart or redirect the user after successful order placement
+      navigate('/checkingout');
     } catch (error) {
       console.error('Error placing order:', error);
     }
-    */
+    
   };
 
   if (!cartItems.length) {
@@ -162,7 +157,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       </div>
       <div className="col-12 d-flex justify-content-between">
         <p>Total</p>
-        <p style={{color:"#2B964F"}}>{calculateTotalAmount(cartItems).toFixed(2)} THB</p>
+        <p style={{color:"#2B964F"}}>{calculateTotalAmount.toFixed(2)} THB</p>
       </div>
       <div className="col-12 d-flex justify-content-between">
         <p>Discounts</p>

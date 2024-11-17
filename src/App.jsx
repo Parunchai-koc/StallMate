@@ -16,6 +16,7 @@ import CartItem from './components/CartItem';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
+import EditProfile from './pages/EditProfile';
 
 function App() {
   const { username } = useParams();
@@ -94,6 +95,10 @@ function App() {
         <Route 
           path="/checkingout" 
           element={isLoggedIn ? <Loading /> : <Navigate to='/login' />} 
+        />
+        <Route 
+          path='/editprofile'
+          element={isLoggedIn ? <EditProfile /> : <Navigate to='/login' />}
         />
       </Routes>
     </Router>

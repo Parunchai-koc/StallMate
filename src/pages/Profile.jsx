@@ -32,14 +32,14 @@ const PEN_ICON = (
   </svg>
 );
 
-const Profile = () => {
+const Profile = ({ userName, reviews, isLoading, onUpdateName }) => {
   const navigate = useNavigate();
   const handleBackBtn = () => {
     navigate("/home");
   };
 
   const handleChangeName = () => {
-    console.log("change user name");
+    navigate("/editprofile");
   };
 
   const handleWallet = () => {
@@ -71,6 +71,7 @@ const Profile = () => {
               style={{ height: "45px" }}
             >
               <p className="mb-0 me-3">David Beckham</p>
+              {/* {isLoading ? "Loading..." : userName} */}
               <i onClick={handleChangeName}>{PEN_ICON}</i>
             </div>
             <div
@@ -78,7 +79,7 @@ const Profile = () => {
               style={{ height: "45px", backgroundColor: "#2B964F" }}
             >
               {STAR_ICON}
-              <div className="ms-2">10 Reviews</div>
+              <div className="ms-2">{reviews}10 Reviews</div>
             </div>
           </div>
 

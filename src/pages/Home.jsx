@@ -25,8 +25,8 @@ const Home = () => {
 	return (
 		<div className='container-fluid'>
 
-			<div className='container-fluid fixed-top d-flex flex-column justify-content-center align-items-center text-white mt-5'
-				style={{ width: '100vw', height: '17vw', background: '#191A1F' }}
+			<div className='container-fluid fixed-top d-flex flex-column justify-content-center align-items-center text-white'
+				style={{ width: '100vw', height: '20vw', background: '#191A1F' , marginTop:"9.25vw"}}
 			>
 				<div className='container-fluid d-flex justify-content-center align-items-center'>
 					<div className="container-fluid d-flex flex-row justify-content-around align-items-center" style={{ width: '100vw', height: '18.6vw', background: '#191A1F' }}>
@@ -42,10 +42,10 @@ const Home = () => {
 						/>
 					</div>
 				</div>
-				<div className="container-fluid" style={{ width: '85vw', marginLeft: 'auto', marginRight: 'auto', marginBottom: "5vw" }}>
+				<div className="container-fluid" style={{ width: '95vw', marginLeft: 'auto', marginRight: 'auto', marginBottom: "5vw" }}>
 					<form onSubmit={handleSubmit} className='w-100 d-flex justify-content-between'>
-						<div className="input-group mb-3 w-100">
-							<span className="input-group-text" style={{ background: '#0E162C', border: 'none' }}>
+						<div className="input-group" style={{marginBottom:"5vw"}}>
+							<span className="input-group-text" style={{ background: '#0E162C', border: 'none', height:"10vw" }}>
 								<i className="bi bi-search" style={{ color: 'white' }}></i>
 							</span>
 							<input
@@ -56,7 +56,7 @@ const Home = () => {
 								value={query}
 								onChange={(e) => setQuery(e.target.value)}
 								required
-								style={{ background: '#0E162C', height: '3.125rem', border: 'none' }}
+								style={{ background: '#0E162C', height: '10vw', border: 'none' }}
 							/>
 						</div>
 					</form>
@@ -64,28 +64,17 @@ const Home = () => {
 			</div>
 
 			<div style={{ height: '25vw' }}></div>
-			<div className="container-fluid d-flex justify-content-center align-items-center" style={{ marginTop: "5vw" }}>
-				<button
-					style={{
-						width: '90.7vw',
-						height: '50vw',
-						borderRadius: '20%',
-						overflow: 'hidden',
-						border: 'none',
-						padding: '0',
-					}}
-				>
+			<div className="container-fluid d-flex justify-content-center align-items-center" style={{ marginTop: "10vw", marginBottom:"5vw" }}>
 					<img
 						src={burghome}
 						alt=""
 						style={{
-							width: '80vw',
+							width: '90vw',
 							height: 'auto',
 							borderRadius: '5vw',
 
 						}}
 					/>
-				</button>
 			</div>
 			<div className="container-fluid d-flex justify-content-between" style={{ fontSize: "4vw" }}>
 				<p className='text-white'>Favorites</p>

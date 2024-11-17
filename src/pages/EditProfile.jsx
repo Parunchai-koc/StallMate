@@ -10,6 +10,10 @@ const EditProfile = () => {
     navigate("/profile");
   };
 
+  const handleLogout = () => {
+    console.log("logout naja kung");
+  };
+
   const LEFT_ARROW = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +173,9 @@ const EditProfile = () => {
         <div className="row fixed-bottom mb-5 d-flex justify-content-center">
           <div className="col-12 d-flex justify-content-center">
             <button className="btn w-50">
-              <h4 className="text-white">Logout</h4>
+              <h4 className="text-white" onClick={handleLogout}>
+                Logout
+              </h4>
             </button>
           </div>
         </div>

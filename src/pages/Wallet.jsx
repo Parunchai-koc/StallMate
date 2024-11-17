@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wallet = () => {
@@ -14,11 +13,11 @@ const Wallet = () => {
       width="30"
       height="30"
       fill="currentColor"
-      class="bi bi-arrow-left"
+      className="bi bi-arrow-left"
       viewBox="0 0 16 16"
     >
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
       />
     </svg>
@@ -30,7 +29,7 @@ const Wallet = () => {
       width="60"
       height="60"
       fill="white"
-      class="bi bi-credit-card"
+      className="bi bi-credit-card"
       viewBox="0 0 16 16"
     >
       <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />

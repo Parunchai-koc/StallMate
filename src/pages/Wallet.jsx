@@ -4,7 +4,7 @@ const Wallet = () => {
   const navigate = useNavigate();
 
   const handleBackBtn = () => {
-    navigate("/home");
+    navigate(-1);
   };
 
   const LEFT_ARROW = (

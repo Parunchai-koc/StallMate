@@ -6,7 +6,7 @@ const EditProfile = () => {
 
   const handleBackBtn = () => {
     console.log("profile");
-    navigate("/profile");
+    navigate(-1);
   };
 
   const handleLogout = () => {

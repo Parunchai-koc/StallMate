@@ -19,6 +19,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
 import EditProfile from './pages/EditProfile';
+import StallHome from './stallPages/StallHome';
+import EditStall from './stallPages/EditStall'
 
 function App() {
   const { username } = useParams();
@@ -96,6 +98,14 @@ function App() {
         <Route 
           path='/editprofile'
           element={isLoggedIn ? <EditProfile /> : <Navigate to='/login' />}
+        />
+        <Route 
+          path='/StallHome'
+          element={isLoggedIn ? <StallHome /> : <Navigate to='/login' />}
+        />
+        <Route 
+          path='/EditStall'
+          element={isLoggedIn ? <EditStall /> : <Navigate to='/login' />}
         />
       </Routes>
     </Router>

@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Setting = () => {
-  return (
-    <div className='text-white display-1'>Setting</div>
-  )
-}
+  const handleBackBtn = () => {
+    navigate("/home");
+  };
 
-export default Setting
+  return <div className="text-white display-1">Setting</div>;
+};
+
+export default Setting;

@@ -18,6 +18,7 @@ import StallMenu from './stallPages/StallMenu';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
+import EditProfile from './pages/EditProfile';
 
 function App() {
   const { username } = useParams();
@@ -31,34 +32,58 @@ function App() {
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/loginStall" element={<LoginStall />} />
         <Route path="/signup" element={<Signup />} />
-        
-        <Route 
-          path="/home" 
-          element={isLoggedIn ? <HomeWithNavbar component={<Home />} /> : <Navigate to="/login" />} 
+
+        <Route
+          path="/home"
+          element={
+            isLoggedIn ? (
+              <HomeWithNavbar component={<Home />} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route 
           path="/stallMenu" 
           element={isLoggedIn ? <StallMenu /> : <Navigate to="/login" />} 
         />
-        <Route 
-          path="/profile" 
-          element={isLoggedIn ? <HomeWithNavbar component={<Profile />} /> : <Navigate to="/login" />} 
+        <Route
+          path="/profile"
+          element={
+            isLoggedIn ? (
+              <HomeWithNavbar component={<Profile />} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
-        <Route 
-          path="/setting" 
-          element={isLoggedIn ? <HomeWithNavbar component={<Setting />} /> : <Navigate to="/login" />} 
+        <Route
+          path="/setting"
+          element={
+            isLoggedIn ? (
+              <HomeWithNavbar component={<Setting />} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
-        <Route 
-          path="/wallet" 
-          element={isLoggedIn ? <HomeWithNavbar component={<Wallet />} /> : <Navigate to="/login" />} 
+        <Route
+          path="/wallet"
+          element={
+            isLoggedIn ? (
+              <HomeWithNavbar component={<Wallet />} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
-        <Route 
-          path="/nearme" 
-          element={isLoggedIn ? <NearMe /> : <Navigate to='/login' />} 
+        <Route
+          path="/nearme"
+          element={isLoggedIn ? <NearMe /> : <Navigate to="/login" />}
         />
-        <Route 
-          path="/resnmenu/:restaurantName" 
-          element={isLoggedIn ? <ResNMenu /> : <Navigate to='/login' />} 
+        <Route
+          path="/resnmenu/:restaurantName"
+          element={isLoggedIn ? <ResNMenu /> : <Navigate to="/login" />}
         />
         <Route 
           path="/cartitem" 
@@ -68,13 +93,17 @@ function App() {
           path="/checkingout" 
           element={isLoggedIn ? <Loading /> : <Navigate to='/login' />} 
         />
+        <Route 
+          path='/editprofile'
+          element={isLoggedIn ? <EditProfile /> : <Navigate to='/login' />}
+        />
       </Routes>
     </Router>
   );
 }
 
 function HomeWithNavbar({ component }) {
-  const [activeIcon, setActiveIcon] = useState('home');
+  const [activeIcon, setActiveIcon] = useState("home");
 
   const handleIconClick = (icon) => {
     setActiveIcon(icon);

@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
 
-  
   useEffect(() => {
     const fetchData = () => {
         const data = [
@@ -241,7 +240,6 @@ const RestaurantList = () => {
             },
           ];       
 
-      
       setRestaurants(data);
     };
 

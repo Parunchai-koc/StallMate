@@ -43,10 +43,12 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
     
     const simplifiedCartItems = cartItems.map(item => ({
       id: item.id,
-      note: item.note,
+      name: item.name,
+      name_en: item.name_en,
       price: item.price,
-      totalPrice: (item.price * item.quantity).toFixed(2),
       quantity: item.quantity,
+      note: item.note,
+      totalPrice: (item.price * item.quantity).toFixed(2),
     }));
     const orderData = {
       cartItems: simplifiedCartItems,
@@ -54,7 +56,6 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       tableNumber: tableNumber,
     };
   
-    console.log('Order Data:', orderData);
     
     try {
       const response = await axios.post('https://jsonplaceholder.typicode.com/posts', orderData);
@@ -82,7 +83,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
           </div>
           <div className="col" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: "4vw" }}>
             <p style={{ fontSize: "5vw", fontWeight: "600" }}>
-              {item.item}
+              {item.name_en}
             </p>
 
             <div className="row">
@@ -93,7 +94,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin:"2vw 0vw" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"2vw" }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span onClick={() => handleDecrement(item)} style={{ marginRight: "1vw" }}>
                   <img src={minus} style={{ cursor: 'pointer', width: "6vw", height: "auto" }} />

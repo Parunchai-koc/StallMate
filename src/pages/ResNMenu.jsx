@@ -12,6 +12,7 @@ import rice from '../assets/rice.png'
 import addCart from '../assets/addcart.png'
 import arrow from "../assets/arrow-left.svg"
 import search from "../assets/search.svg"
+import langIcon from '../assets/lang.png'
 
 const ResNMenu = () => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const ResNMenu = () => {
   const dispatch = useDispatch(); 
   const [selectedItem, setSelectedItem] = useState(null);
   const cartItems = useSelector((state) => state.cart.items); 
-  const amount = useSelector(state => state.cart.amount);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -351,7 +351,7 @@ const ResNMenu = () => {
             </div>
           ) : selectedItem ? (
             <div className="item-detail-modal">
-              <div className="card text-white" style={{ marginBottom: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw"}}>
+              <div className="card text-white" style={{ marginBottom: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw", margin:"0vw 1vw"}}>
                 <div className="row d-flex align-items-center justify-content-around" style={{marginBottom: '3vw', marginTop:"2vw"}}>
                   <div className="col">
                     <img src={selectedItem.imageUrl} className="image-fluid rounded" style={{ width: "50vw", height: "auto", marginTop:"3vw" }} />
@@ -359,7 +359,12 @@ const ResNMenu = () => {
                   <div className="col align-items-center">
                     <h2 className='text-white' style={{fontSize:"6vw"}}>{selectedLanguage == 'English'? selectedItem.item : selectedItem.item_th}</h2>
                     <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"6vw"}}>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                      <Dropdown.Toggle id="dropdown-basic" style={{fontSize:"3.5vw", display: "flex", alignItems: "center",color:"black", fontWeight:600,background:"#4CF986"}}>
+                        <img 
+                          src={langIcon}
+                          alt="Language Icon" 
+                          style={{ width: "5vw", height: "5vw", marginRight: "1vw" }} 
+                        />
                         {selectedLanguage}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -371,12 +376,12 @@ const ResNMenu = () => {
                   </div>
                 </div>
               </div>
-              <p className='text-white'>Description : {selectedLanguage == 'English'? selectedItem.description : selectedItem.description_th}</p>
-              <div style={{ marginTop: "4vw" }}>
+              <p className='text-white' style={{fontSize:"4vw", margin:"6vw 2vw"}}>Description : {selectedLanguage == 'English'? selectedItem.description : selectedItem.description_th}</p>
+              <div style={{margin:"0vw 2vw"}}>
                 <p className='text-white display-5'>Notes</p>
                 <hr className="my-4" style={{
-                            borderTop: '2px solid grey',
-                            width: '90vw',
+                            borderTop: '0.5vw solid grey',
+                            width: '95vw',
                             position: 'relative',
                             left: '50%',
                             transform: 'translateX(-50%)'
@@ -384,26 +389,26 @@ const ResNMenu = () => {
                 <textarea
                   className="form-control table-form"
                   placeholder="Add a note for the seller"
-                  rows="1"
+                  rows="4"
                   value={selectedItem.note || ''}
                   onChange={(e) => setSelectedItem({ ...selectedItem, note: e.target.value })}
                   style={{ backgroundColor: 'black', color: 'white', borderColor: 'gray' }}
                 />
                 <hr className="my-4" style={{
-                            borderTop: '2px solid grey',
-                            width: '90vw',
+                            borderTop: '0.5vw solid grey',
+                            width: '95vw',
                             position: 'relative',
                             left: '50%',
                             transform: 'translateX(-50%)'
                           }} />
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '40vw', justifyContent:"center" }}> 
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '35vw', justifyContent:"center", marginBottom:"3.5vw" }}> 
                 <button className='bg-success'
                   onClick={() => handleQuantityChange(selectedItem.quantity - 1)}
                   style={{
                     padding: '1vw',
                     width:"8vw",
-                    height:"auto",
+                    height:"8vw",
                     backgroundColor: '#6c757d',
                     color: 'white',
                     border: 'none',
@@ -415,14 +420,14 @@ const ResNMenu = () => {
                   -
                 </button>
                 
-                <span className='text-white' style={{ fontSize: '6vw', margin: '0 10px' }}>{selectedItem.quantity}</span>
+                <span className='text-white' style={{ fontSize: '6vw', margin: '0 2vw' }}>{selectedItem.quantity}</span>
                 
                 <button className='bg-success'
                   onClick={() => handleQuantityChange(selectedItem.quantity + 1)}
                   style={{
                     padding: '1vw',
                     width:"8vw",
-                    height:"auto",
+                    height:"8vw",
                     backgroundColor: '#6c757d',
                     color: 'white',
                     border: 'none',
@@ -433,26 +438,31 @@ const ResNMenu = () => {
                   +
                 </button>
               </div>
-              <div className="row align-items-center" style={{ marginTop: '4vw' }}>
-              <button className='text-white bg-success' style={{marginBottom:"4vw"}} onClick={confirmAddToCart} >Add to Cart</button>
-              <button className='text-white bg-danger' onClick={() => setSelectedItem(null) } >Cancel</button>
+              <div className="row align-items-center" style={{ margin:"1vw 1vw"}}>
+              <button className='text-white bg-success' style={{marginBottom:"4vw", height:"10vw", fontSize:"3.5vw"}} onClick={confirmAddToCart} >Add to Cart</button>
+              <button className='text-white bg-danger'style={{marginBottom:"4vw", height:"10vw", fontSize:"3.5vw"}} onClick={() => setSelectedItem(null) } >Cancel</button>
               </div>
             </div>
           ) : (
             <>
               <Header pageTitle={""} />
-              <div className="card text-white" style={{ marginBottom: '6vw', marginTop: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw"}}>
+              <div className="card text-white" style={{ marginBottom: '6vw', marginTop: '6vw', background:"#01040F", borderRadius:"5vw" , padding:"1vw", marginRight:"1vw",marginLeft:"1vw"}}>
                 <div className="row d-flex align-items-center justify-content-around" style={{marginBottom: '3vw', marginTop:"2vw"}}>
                   <div className="col">
                     <img src={selectedRestaurant.pic} className="image-fluid rounded" style={{ width: "43vw", height: "auto", marginTop:"3vw" }} />
                   </div>
                   <div className="col">
                     <h1 className="mb-4" style={{ fontSize: '7vw' }}>{selectedRestaurant.name}</h1>
-                    <p className="card-text text-white">
+                    <p className="card-text text-white" style={{fontSize:"4vw"}}>
                       <i className="bi bi-star" style={{ color: 'yellow' }}></i> {selectedRestaurant.rating}
                     </p>
                     <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"2vw"}}>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" style={{fontSize:"3.5vw"}}>
+                      <Dropdown.Toggle  id="dropdown-basic" style={{fontSize:"3.5vw", color:"black", fontWeight:600,background:"#4CF986"}}>
+                        <img 
+                            src={langIcon}
+                            alt="Language Icon" 
+                            style={{ width: "5vw", height: "5vw", marginRight: "1vw" }} 
+                        />
                         {selectedLanguage}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -463,10 +473,10 @@ const ResNMenu = () => {
                   </div>
                 </div>
               </div>
-              <div className="d-flex justify-content-end align-items-center" style={{marginTop:"2vw",  background:'black ', borderRadius:"2vw", padding:"1.5vw", marginBottom:"6vw"}}>
+              <div className="d-flex justify-content-end align-items-center" style={{marginLeft:"1vw",marginRight:"1vw", marginTop:"2vw",  background:'black ', borderRadius:"2vw", padding:"1.5vw", marginBottom:"6vw"}}>
                 <p className='text-white' style={{marginRight:"5vw", fontSize:"4vw", marginTop:"2.6vw", fontWeight:"500"}}>Category</p>
                 <Dropdown onSelect={handleSelectCat} style={{marginRight:"3vw"}}>
-                  <Dropdown.Toggle variant="success" style={{fontSize:"3.5vw"}}>
+                  <Dropdown.Toggle style={{fontSize:"3.5vw", color:"black", fontWeight:600,background:"#4CF986"}}>
                     {selectedCat}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -482,40 +492,42 @@ const ResNMenu = () => {
               {selectedCat === "All" ? (
                 <ul className="container-fluid" style={{border: "none"}}>
                   {Object.entries(selectedRestaurant.menu).map(([category, items]) => (
-                    <div key={category}>
-                      <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw"}}>{category}</h3>
+                    <div key={category} className="col-12 text-white">
+                      <div className="card-header" style={{border:"none"}}>
+                          <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw", marginLeft:"1vw"}}>{category}</h3>
+                      </div>
                       {items.map((item, index) => (
-                        <li
-                          key={index}
-                          className="card d-flex justify-content-between align-items-start text-white"
-                          style={{
-                            border: "none",
-                            marginBottom: "2vw",
-                            background: "none"
-                          }}
-                          onClick={() => handleFoodClick(item)}
-                        >
-                          <hr className="my-4" style={{
-                            borderTop: '2px solid grey',
-                            width: '90vw',
-                            position: 'relative',
-                            left: '50%',
-                            transform: 'translateX(-50%)'
-                          }} />
-                          <div className="row">
-                                <div className="col">
-                                  <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
-                                </div>
-                                <div className="col" style={{ display: 'flex', flexDirection: 'column', marginTop:"4vw" }}>
-                                  <div className="row">
-                                    <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
-                                    <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"4vw" }}>
-                                      <span className="badge bg-success rounded-pill" style={{marginRight:"10vw"}}>{item.price} THB</span> 
-                                    </div>
-                                  </div>
-                                </div>
+                        <li 
+                        key={index} 
+                        className="card d-flex justify-content-between align-items-start text-white"
+                        style={{
+                          border:"none",
+                          marginBottom:"2vw",
+                          background:"none"
+                        }} 
+                        onClick={() => handleFoodClick(item)}
+                      >
+                        <hr className="my-4" style={{
+                            borderTop: '2px solid grey', 
+                            width: '90vw', 
+                            position: 'relative', 
+                            left: '50%', 
+                            transform: 'translateX(-50%)' 
+                        }} />
+                        <div className="row">
+                          <div className="col">
+                            <img src={item.imageUrl} alt="" style={{ width: "30vw", height: "auto" }} />
+                          </div>
+                          <div className="col" style={{ display: 'flex', flexDirection: 'column', marginTop:"4vw" }}>
+                            <div className="row">
+                              <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
+                              <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"4vw" }}>
+                                <span className="badge bg-success rounded-pill" style={{marginRight:"10vw", fontSize:"4vw"}}>{item.price} THB</span> 
+                              </div>
                             </div>
-                        </li>
+                          </div>
+                      </div>
+                      </li>
                       ))}
                     </div>
                   ))}
@@ -526,7 +538,7 @@ const ResNMenu = () => {
                     return (
                       <div key={category} className="col-12 text-white">
                         <div className="card-header" style={{border:"none"}}>
-                          <h3 style={{fontSize:"6vw"}}>{category}</h3>
+                          <h3 style={{fontSize: "6vw", color: "white", marginTop: "3vw", marginLeft:"1vw"}}>{category}</h3>
                         </div>
                         <ul className="container-fluid" style={{border:"none"}}>
                           {items.map((item, index) => (
@@ -555,7 +567,7 @@ const ResNMenu = () => {
                                   <div className="row">
                                     <p style={{ fontSize: "5vw", fontWeight: "600" }}>{selectedLanguage === "English" ? item.item : item.item_th}</p>
                                     <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop:"4vw" }}>
-                                      <span className="badge bg-success rounded-pill" style={{marginRight:"10vw"}}>{item.price} THB</span> 
+                                      <span className="badge bg-success rounded-pill" style={{marginRight:"10vw", fontSize:"4vw"}}>{item.price} THB</span> 
                                     </div>
                                   </div>
                                 </div>
@@ -598,7 +610,8 @@ const ResNMenu = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  fontSize: '3vw',
+                  fontSize: '2.5vw',
+                  marginRight:"-1.6vw"
                 }}>
                   {calculateTotalQuantity()}
                 </i>

@@ -11,7 +11,8 @@ const LoginSignup = () => {
   const navigate = useNavigate();
 
     const handleLogin = () => {
-        window.location.href = 'http://localhost:3000/auth/customer/google';
+        //window.location.href = 'http://localhost:3000/auth/customer/google';
+        navigate('/home');
     };
 
   const handleGoogleLogin = () => {

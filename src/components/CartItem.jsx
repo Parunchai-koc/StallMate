@@ -1,11 +1,12 @@
 import {React, useState} from 'react';
-import { useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItem, updateQuantity, clearCart } from './CartSlice'; 
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import bin from "../assets/remove.png";
 import plus from "../assets/plus.png";
 import minus from "../assets/minus.png";
+import axios from 'axios';
 
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
@@ -13,11 +14,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
   const [tableNumber, setTableNumber] = useState('');
   const calculateItemTotal = (item) => item.price * item.quantity;
 
-  const calculateTotalAmount = (items) => {
-    return items.reduce((total, item) => {
-      return total + item.price * item.quantity; 
-    }, 0);
-  };
+  const calculateTotalAmount = useSelector(state => state.cart.amount);
 
   const handleIncrement = (item) => {
     console.log("Incrementing:", item);
@@ -42,23 +39,32 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
   };
   
   const handleCheckout = async () => {
-    navigate('/checkingout');
-    /*
-    // Prepare the order data
+    event.preventDefault();
+    
+    const simplifiedCartItems = cartItems.map(item => ({
+      id: item.id,
+      note: item.note,
+      price: item.price,
+      totalPrice: (item.price * item.quantity).toFixed(2),
+      quantity: item.quantity,
+    }));
     const orderData = {
-      cartItems: cartItems,
-      totalAmount: calculateTotalAmount(cartItems).toFixed(2),
+      cartItems: simplifiedCartItems,
+      totalAmount: calculateTotalAmount.toFixed(2),
       tableNumber: tableNumber,
     };
-
+  
+    console.log('Order Data:', orderData);
+    
     try {
-      // Make the API call to the backend
-      const response = await axios.post('/api/orders', orderData); // Replace with your actual backend URL
+      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', orderData);
+      dispatch(clearCart());
       console.log('Order placed successfully:', response.data);
-      // You can clear the cart or redirect the user after successful order placement
+      navigate('/checkingout');
     } catch (error) {
       console.error('Error placing order:', error);
-    }*/
+    }
+    
   };
 
   if (!cartItems.length) {
@@ -69,7 +75,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
     <div className="cart-container text-white">
       <div>
       {cartItems.map((item) => (
-      <div className="card text-white" key={item.id} style={{ background: "#01040F", borderRadius: "5vw", marginBottom: '2rem' }}>
+      <div className="card text-white" key={item.id} style={{ background: "#01040F", borderRadius: "5vw", marginBottom: '5vw', marginRight:"1vw",marginLeft:"1vw" }}>
         <div className="row">
           <div className="col">
             <img src={item.imageUrl} alt="" style={{ width: "40vw", height: "auto" }} />
@@ -87,19 +93,19 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: "2vw" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin:"2vw 0vw" }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span onClick={() => handleDecrement(item)} style={{ marginRight: "1vw" }}>
-                  <img src={minus} style={{ cursor: 'pointer', width: "5vw", height: "auto" }} />
+                  <img src={minus} style={{ cursor: 'pointer', width: "6vw", height: "auto" }} />
                 </span>
-                <span style={{ margin: "0 1vw" }}>{item.quantity}</span>
+                <span style={{ margin: "0 1vw" , fontSize:"5vw"}}>{item.quantity}</span>
                 <span onClick={() => handleIncrement(item)} style={{ marginLeft: "1vw" }}>
-                  <img src={plus} style={{ cursor: 'pointer', width: "5vw", height: "auto" }} />
+                  <img src={plus} style={{ cursor: 'pointer', width: "6vw", height: "auto" }} />
                 </span>
               </div>
 
               <span onClick={() => handleRemove(item)} style={{ marginRight: "5vw" }}>
-                <img src={bin} style={{ cursor: 'pointer', width: "5vw", height: "auto" }} />
+                <img src={bin} style={{ cursor: 'pointer', width: "6vw", height: "auto" }} />
               </span>
             </div>
           </div>
@@ -116,32 +122,42 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
     
   </div>
   <div>
-        <p>Table No. (For Dine-In Orders)</p>
-        <input 
-          type="text" 
-          value={tableNumber || ''}
-          onChange={handleTableNumberChange} 
-          className="form-control table-form"
-          placeholder="Enter Table Number" 
-          style={{ backgroundColor: 'black', color: 'white', borderColor: 'gray' }}
-        />
-  </div>
-  <div>
-  <hr className="my-4" style={{
-    borderTop: '2px solid grey', 
-    width: '90vw', 
-    position: 'relative', 
-    left: '50%', 
-    transform: 'translateX(-50%)' 
+  <p className='display-5' style={{marginLeft:"1vw",marginRight:"1vw", marginBottom:"5vw"}}>Table No.</p>
+  <form onSubmit={handleCheckout}>
+  <input 
+      type="text" 
+      value={tableNumber || ''}
+      onChange={handleTableNumberChange} 
+      className="form-control table-form"
+      placeholder="Enter Table Number" 
+      required
+      style={{
+        backgroundColor: 'black', 
+        color: 'white', 
+        borderColor: 'gray', 
+        marginBottom: "6vw",
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: "95vw",
+        height: "10vw",
+        display: "block"
+      }}
+    />
+    <hr style={{
+      borderTop: '2px solid grey', 
+      width: '95vw', 
+      position: 'relative', 
+      left: '50%', 
+      transform: 'translateX(-50%)', 
     }} />
-    <div className="row">
+    <div className="row" style={{marginLeft:"1vw", marginRight:'1vw', fontSize:"3.5vw"}}>
       <div className="col-12 d-flex justify-content-between">
         <p>Delivery fee</p>
         <p style={{color:"#2B964F"}}>20 THB</p>
       </div>
       <div className="col-12 d-flex justify-content-between">
         <p>Total</p>
-        <p style={{color:"#2B964F"}}>{calculateTotalAmount(cartItems).toFixed(2)} THB</p>
+        <p style={{color:"#2B964F"}}>{calculateTotalAmount.toFixed(2)} THB</p>
       </div>
       <div className="col-12 d-flex justify-content-between">
         <p>Discounts</p>
@@ -152,13 +168,14 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
         <p style={{color:"#92E3A9"}}>***456</p>
       </div>
     </div>
-    <div className="row d-flex justify-content-center">
-      <button className='row text-white bg-success justify-content-center' onClick={handleCheckout}>Checkout</button>
+    <div className="row d-flex justify-content-center" style={{marginLeft:"1vw", marginRight:'1vw'}}>
+      <button className='row text-white bg-success justify-content-center' type="submit" style={{height:"11.5vw", fontSize:"4vw"}}>Checkout</button>
     </div>
-    <div className="row d-flex justify-content-center">
-      <button className='row text-white justify-content-center'  onClick={onContinueShopping} style={{background:"#9B9B9B", marginTop:"2vw"}}>Continue Shopping</button>
-    </div>
+  </form>
+  <div className="row d-flex justify-content-center" style={{marginLeft:"1vw", marginRight:'1vw'}}>
+    <button className='row text-white justify-content-center' onClick={onContinueShopping} style={{background:"#9B9B9B", marginTop:"2vw",height:"11.5vw", fontSize:"4vw"}}>Continue Shopping</button>
   </div>
+  </div>  
 </div>
 
   );

@@ -80,7 +80,7 @@ const HISTORY_ICON = (
     width="45"
     height="50"
     fill="white"
-    class="bi bi-clipboard-data-fill"
+    className="bi bi-clipboard-data-fill"
     viewBox="0 0 16 16"
   >
     <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
@@ -102,9 +102,7 @@ const Profile = () => {
     console.log("wallet");
   };
 
-  const handleMastercard = () => {
-    console.log("Mastercard");
-  };
+
 
   return (
     <div className="container-fluid">

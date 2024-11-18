@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import arrow from "../assets/arrow-left.svg"
 import search from "../assets/search.svg"
 import stallqr from '../assets/stallqr.png'
+import StallMenu from "../stallPages/StallMenu";
 
 const HeaderMenu = () => {
     const navigate = useNavigate();
     const [searchVisible, setSearchVisible] = useState(false);
     const [query, setQuery] = useState("");
+    const [isQrVisible, setIsQrVisible] = useState(false);
 
     const handleBackBtn = () => {
         navigate(-1);
@@ -24,6 +26,10 @@ const HeaderMenu = () => {
         console.log("Searching for:", query);
         setQuery("");
     };
+
+    const handleBackQrBtn = () => {
+        setIsQrVisible(!isQrVisible);
+      }
   return (
     <div className="container-fluid">
             <div
@@ -39,7 +45,7 @@ const HeaderMenu = () => {
                     <img 
                         src={stallqr} 
                         alt="" 
-                        onClick={handleSearchBtn}
+                        onClick={handleBackQrBtn}
                         style={{width:"7vw", marginRight:"5vw"}}
                     />
                     <img 
@@ -78,6 +84,7 @@ const HeaderMenu = () => {
                     </form>
                 </div>
             )}
+        
         </div>
   )
 }

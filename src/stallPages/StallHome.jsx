@@ -95,7 +95,7 @@ const Profile = () => {
   };
 
   const handleChangeName = () => {
-    navigate("/editprofile");
+    navigate("/EditStall");
   };
 
   const handleWallet = () => {

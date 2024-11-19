@@ -15,10 +15,14 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import search from "../assets/search.svg";
 import stallqr from '../assets/stallqr.png';
 import catego from '../assets/catego.svg';
+import shop from '../assets/shop.svg';
+import locationLogo from '../assets/location.svg';
+import calendar from '../assets/CalendarShop.svg';
 
 
 
 const StallMenu = () => {
+  const[selectedRestaurant, setSelectedRestaurant] = useState(null);
     const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [restaurants, setRestaurants] = useState([]);
@@ -36,6 +40,9 @@ const StallMenu = () => {
   });
   const [searchVisible, setSearchVisible] = useState(false);
   const [query, setQuery] = useState("");
+  const [editRes, setEditRes] = useState(null);
+  const [selectedDay, setSelectedDay] = useState("Monday");
+  
     
     
   useEffect(() => {
@@ -87,19 +94,63 @@ const StallMenu = () => {
               "imageUrl": rice
             }
           ]
+        },
+        "opening_hours": [
+          {
+            "weekday": "Monday",
+            "open_time": "09:00",
+            "close_time": "21:00"
+          },
+          {
+            "weekday": "Tuesday",
+            "open_time": "09:00",
+            "close_time": "21:00"
+          },
+          {
+            "weekday": "Wednesday",
+            "open_time": "09:00",
+            "close_time": "21:00"
+          },
+          {
+            "weekday": "Thursday",
+            "open_time": "09:00",
+            "close_time": "21:00"
+          },
+          {
+            "weekday": "Friday",
+            "open_time": "09:00",
+            "close_time": "21:00"
+          },
+          {
+            "weekday": "Saturday",
+            "open_time": "09:00",
+            "close_time": "17:00"
+          },
+          {
+            "weekday": "Sunday",
+            "open_time": "09:00",
+            "close_time": "17:00"
+          }
+        ],
+        "location": {
+          "address": "1234 Food Street",
+          "city": "Bangkok",
+          "state": "Bangkok"
         }
       }
     ];
+    
     setTimeout(() => {
       setRestaurants(data);
+      const foundRestaurant = data.find(
+        (restaurant) => restaurant.restaurant_name === "Delicious Bites"
+      );
+      if (foundRestaurant) {
+        setSelectedRestaurant(foundRestaurant);
+      }
       setLoading(false);
     }, 300);
   }, []);
-
-  const selectedRestaurant = restaurants.find(
-    (restaurant) => restaurant.restaurant_name === "Delicious Bites"
-  );
-
   if (loading) {
     return <div className="text-center text white">Loading...</div>;
   }
@@ -123,9 +174,7 @@ const handleSearchSubmit = (e) => {
   setQuery("");
 };
 
-const handleBackQrBtn = () => {
-  setIsQrVisible(!isQrVisible);
-}
+
 
 const handleEditRes = () => {
   setIsResVisible(!isResVisible);
@@ -311,7 +360,7 @@ const handleAddBtn = () => {
         imageUrl: null,
         name: "",
         description: "",
-        price: "",
+        price: 0,
         category: "",
       });
       setAddMenu(false); 
@@ -319,6 +368,94 @@ const handleAddBtn = () => {
       console.error("Error submitting form:", error);
     }
   };
+
+  const handleResSubmit = (e) => {
+    e.preventDefault();
+  
+    if (!selectedRestaurant || !selectedRestaurant.categories) {
+      console.error("selectedRestaurant or its categories are undefined.");
+      return;
+    }
+  
+    
+    const dataToSend = {
+      restaurant_id: selectedRestaurant.restaurant_id, 
+      restaurant_name: selectedRestaurant.restaurant_name, 
+      restaurant_image: selectedRestaurant.restaurant_image,
+      location: selectedRestaurant.location, 
+      opening_hours: selectedRestaurant.opening_hours, 
+    };
+  
+  
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),  
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Data sent to fake API:", dataToSend);
+        console.log("API Response:", data);
+  
+        const updatedRestaurants = restaurants.map((restaurant) =>
+          restaurant.restaurant_id === selectedRestaurant.restaurant_id
+            ? { ...restaurant, ...selectedRestaurant }
+            : restaurant
+        );
+  
+       
+        setRestaurants(updatedRestaurants);
+        setIsResVisible(false);
+      })
+      .catch((error) => {
+        console.error("Error sending data to the fake API:", error);
+      });
+  };
+  
+  const handleResImageClick = () => {
+    document.getElementById('fileInputRes').click();
+  }
+  const handleResFileChange = (e) => {
+    const file = e.target.files[0]; 
+    if (file) {
+      const fileUrl = URL.createObjectURL(file); 
+
+      setSelectedRestaurant((prev) => ({
+        ...prev,
+        restaurant_image: fileUrl, 
+        
+      }));
+    }
+  }
+  const handleResForm = (e) => {
+    const { name, value, dataset } = e.target;
+    const day = dataset.day;
+  
+    setSelectedRestaurant((prev) => {
+      
+      if (day) {
+        const updatedHours = prev.opening_hours.map((entry) =>
+          entry.weekday === day ? { ...entry, [name]: value } : entry
+        );
+        return { ...prev, opening_hours: updatedHours };
+      }
+  
+      if (name === 'address' || name === 'city' || name === 'state') {
+        return {
+          ...prev,
+          location: {
+            ...prev.location,
+            [name]: value
+          }
+        };
+      }
+
+      return { ...prev, [name]: value };
+    });
+  };
+  
   
   
   
@@ -371,7 +508,7 @@ const handleAddBtn = () => {
                   </span>
                   <input 
                     className='text-white'
-                    type="price"
+                    type="number"
                     onChange={handleFormChange}
                     name="price"
                     value={selectedMenu.price || ""}
@@ -404,15 +541,208 @@ const handleAddBtn = () => {
         ) : (
           isResVisible ? (
             <div>
-              <div className="container-fluid">
-                <div
-                  className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
-                  style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
-                >
-                  <img src={arrow} alt="" onClick={handleEditRes} />
-                </div>
+           
+            <div className="container-fluid">
+              <div
+                className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
+                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
+              >
+                <img src={arrow} alt="" onClick={handleEditRes} />
+                <p className="display-5" style={{marginRight:"37vw", marginTop:"2vw"}}>Menu</p>
               </div>
             </div>
+  
+            
+            <div className='row' style={{marginTop: "20vw", display: "flex", flexDirection: "column", alignItems: "center"}}>
+              <img src={selectedRestaurant.restaurant_image} alt="" style={{width:"60vw"}} />
+              <form onSubmit={handleResSubmit} className='d-flex flex-column justify-content-center align-items-center' style={{position: "relative"}}>
+                <img 
+                  src={editLogo} 
+                  alt="Edit Logo" 
+                  style={{width: "12vw", position: "absolute", left: "70vw", top: "-10vw", cursor: "pointer"}} 
+                  onClick={handleResImageClick} 
+                />
+                <input id="fileInputRes" type="file" accept="image/*" style={{display: "none"}} onChange={handleResFileChange} />
+               
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw", marginTop:"6vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={shop} alt="" style={{height:"8vw"}} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleResForm}
+                    name="restaurant_name"
+                    value={selectedRestaurant.restaurant_name || ""}
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={locationLogo} alt="" style={{height:"8vw"}} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleResForm}
+                    name="address"
+                    value={selectedRestaurant.location.address || ""}
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <p className='text-white' style={{fontSize:"3.5vw", margin: 0}}>City</p>
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleResForm}
+                    name="city"
+                    value={selectedRestaurant.location.city || ""}
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                  <p className='text-white' style={{fontSize:"3.5vw", margin: 0}}>State</p>
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleResForm}
+                    name="state"
+                    value={selectedRestaurant.location.state || ""}
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                
+                <div className="input-group d-flex justify-content-center align-items-center" style={{ marginBottom: "3vw" }}>
+                  <span
+                    className="d-flex justify-content-center align-items-center"
+                    style={{
+                      background: "#01040F",
+                      border: "none",
+                      height: "15vw",
+                      width: "15vw",
+                      marginTop: "-1vw",
+                      borderRadius: "2vw 0 0 2vw",
+                    }}
+                  >
+                    <p className="text-white" style={{ fontSize: "3.5vw", margin: 0 }}>
+                      Day
+                    </p>
+                  </span>
+                  <select
+                    className="text-white"
+                    value={selectedDay}
+                    onChange={(e) => setSelectedDay(e.target.value)}
+                    style={{
+                      width: "75vw",
+                      height: "15vw",
+                      marginBottom: "1vw",
+                      background: "#01040F",
+                      border: "none",
+                      fontSize: "4vw",
+                      borderRadius: "0 2vw 2vw 0",
+                    }}
+                  >
+                    {selectedRestaurant.opening_hours.map((entry) => (
+                      <option key={entry.weekday} value={entry.weekday}>
+                        {entry.weekday}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+               
+                <div className="input-group d-flex justify-content-center align-items-center" style={{ marginBottom: "3vw" }}>
+                  <span
+                    className="d-flex justify-content-center align-items-center"
+                    style={{
+                      background: "#01040F",
+                      border: "none",
+                      height: "15vw",
+                      width: "15vw",
+                      marginTop: "-1vw",
+                      borderRadius: "2vw 0 0 2vw",
+                    }}
+                  >
+                    <p className="text-white" style={{ fontSize: "3.5vw", margin: 0 }}>
+                      Open
+                    </p>
+                  </span>
+                  <input
+                    className="text-white"
+                    type="time"
+                    name="open_time"
+                    data-day={selectedDay} 
+                    value={
+                      selectedRestaurant.opening_hours.find((entry) => entry.weekday === selectedDay)?.open_time || ""
+                    }
+                    onChange={handleResForm}
+                    style={{
+                      width: "75vw",
+                      height: "15vw",
+                      marginBottom: "1vw",
+                      background: "#01040F",
+                      border: "none",
+                      fontSize: "4vw",
+                      borderRadius: "0 2vw 2vw 0",
+                    }}
+                  />
+                </div>
+
+                
+                <div className="input-group d-flex justify-content-center align-items-center" style={{ marginBottom: "3vw" }}>
+                  <span
+                    className="d-flex justify-content-center align-items-center"
+                    style={{
+                      background: "#01040F",
+                      border: "none",
+                      height: "15vw",
+                      width: "15vw",
+                      marginTop: "-1vw",
+                      borderRadius: "2vw 0 0 2vw",
+                    }}
+                  >
+                    <p className="text-white" style={{ fontSize: "3.5vw", margin: 0 }}>
+                      Close
+                    </p>
+                  </span>
+                  <input
+                    className="text-white"
+                    type="time"
+                    name="close_time"
+                    data-day={selectedDay} 
+                    value={
+                      selectedRestaurant.opening_hours.find((entry) => entry.weekday === selectedDay)?.close_time || ""
+                    }
+                    onChange={handleResForm}
+                    style={{
+                      width: "75vw",
+                      height: "15vw",
+                      marginBottom: "1vw",
+                      background: "#01040F",
+                      border: "none",
+                      fontSize: "4vw",
+                      borderRadius: "0 2vw 2vw 0",
+                    }}
+                  />
+                </div>
+
+
+                
+  
+                
+                <div className='d-flex justify-content-center align-items-center fixed-bottom' style={{marginBottom:"7vw"}}>
+                  <button type='submit' className='d-flex justify-content-center align-items-center text-white' style={{ width:"95vw", height:"12vw", background:"#2B964F", fontSize:"3.5vw", borderRadius:"4vw"}}>
+                    Finished
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
           ) : addMenu ? (
             <div>
            

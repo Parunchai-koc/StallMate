@@ -257,13 +257,16 @@ const handleAddBtn = () => {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-  
+    if (!selectedAddMenu.imageUrl) {
+      alert("Please select an image for the menu item.");
+      return; 
+    }
     const dataToSend = {
       name: selectedAddMenu.name,
       price: selectedAddMenu.price,
       description: selectedAddMenu.description,
       category: selectedAddMenu.category,
-      image: selectedAddMenu.imageUrl, // URL or path to the image
+      image: selectedAddMenu.imageUrl, 
     };
   
     try {
@@ -279,18 +282,44 @@ const handleAddBtn = () => {
   
       const data = await response.json();
       console.log("Fake API Response:", data);
+  
+      const newMenuItem = { ...dataToSend, _id: data.id };
+  
+      const updatedCategories = { ...selectedRestaurant.categories };
+  
+      if (updatedCategories[newMenuItem.category]) {
+        
+        updatedCategories[newMenuItem.category] = [
+          ...updatedCategories[newMenuItem.category],
+          newMenuItem,
+        ];
+      } else {
+        
+        updatedCategories[newMenuItem.category] = [newMenuItem];
+      }
+  
+     
+      const updatedRestaurants = restaurants.map((restaurant) =>
+        restaurant.restaurant_name === selectedRestaurant.restaurant_name
+          ? { ...restaurant, categories: updatedCategories }
+          : restaurant
+      );
+  
+      setRestaurants(updatedRestaurants);
+  
+      setSelectedAddMenu({
+        imageUrl: null,
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+      });
+      setAddMenu(false); 
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-    setAddMenu(false);
-    setSelectedAddMenu({
-      image: null,
-      name: "",
-      description: "",
-      price: 0,
-      category: "",
-    });
   };
+  
   
   
   

@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import arrow from "../assets/arrow-left.svg"
 import search from "../assets/search.svg"
 const Header = ({ pageTitle }) => {
-    const navigate = useNavigate();
-    const [searchVisible, setSearchVisible] = useState(false);
-    const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [query, setQuery] = useState("");
 
     const handleBackBtn = () => {
         navigate(-1);
     };
 
-    const handleSearchBtn = () => {
-        setSearchVisible(!searchVisible);
-    };
+  const handleSearchBtn = () => {
+    setSearchVisible(!searchVisible);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Searching for:", query);
-        setQuery("");
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Searching for:", query);
+    setQuery("");
+  };
 
     return (
         <div className="container-fluid">
@@ -71,7 +71,7 @@ const Header = ({ pageTitle }) => {
                 </div>
             )}
         </div>
-    );
+      )
 };
 
 export default Header;

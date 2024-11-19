@@ -12,8 +12,9 @@ import menuName from '../assets/menuName.png';
 import dollar from '../assets/dollar.png';
 import cloud from '../assets/Cloud.png';
 import "bootstrap-icons/font/bootstrap-icons.css";
-import search from "../assets/search.svg"
-import stallqr from '../assets/stallqr.png'
+import search from "../assets/search.svg";
+import stallqr from '../assets/stallqr.png';
+import catego from '../assets/catego.svg';
 
 
 
@@ -26,6 +27,13 @@ const StallMenu = () => {
   const [isResVisible, setIsResVisible] = useState(false);
   const [isQrVisible, setIsQrVisible] = useState(false);
   const [addMenu, setAddMenu] = useState(false);
+  const [selectedAddMenu, setSelectedAddMenu] = useState({
+    image: null,
+    name: "",
+    description: "",
+    price: 0,
+    category: "",
+  });
   const [searchVisible, setSearchVisible] = useState(false);
   const [query, setQuery] = useState("");
     
@@ -37,6 +45,7 @@ const StallMenu = () => {
         "restaurant_name": "Delicious Bites",
         "restaurant_image": shoplogo,
         "rating": 4.5,
+        "qr_code": "https://imageawsmenubucket.s3.ap-southeast-1.amazonaws.com/qrcodes/6723b36780c1b29068338c17-6918f546-fd75-4a5a-ac5f-f045c27e6411.png",
         "categories": {
           "Main Dish": [
             {
@@ -142,6 +151,14 @@ const handleFormChange = (e) => {
     [e.target.name] : e.target.value,
   }));
 }
+const handleAddFormChange = (e) => {
+  const { name, value } = e.target;
+  setSelectedAddMenu((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
 
 const handleBackBtn = () => {
   setSelectedMenu(null);
@@ -164,9 +181,24 @@ const handleAddBtn = () => {
       }));
     }
   };
+  const handleAddFileChange = (e) => {
+    const file = e.target.files[0]; 
+    if (file) {
+      const fileUrl = URL.createObjectURL(file); 
+
+      setSelectedAddMenu((prev) => ({
+        ...prev,
+        imageUrl: fileUrl, 
+        
+      }));
+    }
+  };
 
   const handleImageClick = () => {
     document.getElementById('fileInput').click(); 
+  };
+  const handleAddImageClick = () => {
+    document.getElementById('fileInputAdd').click(); 
   };
 
   const handleSubmit = (e) => {
@@ -222,12 +254,43 @@ const handleAddBtn = () => {
         console.error("Error sending data to the fake API:", error);
       });
   };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
   
+    const dataToSend = {
+      name: selectedAddMenu.name,
+      price: selectedAddMenu.price,
+      description: selectedAddMenu.description,
+      category: selectedAddMenu.category,
+      image: selectedAddMenu.imageUrl, // URL or path to the image
+    };
   
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
   
+      if (!response.ok) throw new Error("Failed to send data to the fake API");
   
-  
-  
+      const data = await response.json();
+      console.log("Fake API Response:", data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+    setAddMenu(false);
+    setSelectedAddMenu({
+      image: null,
+      name: "",
+      description: "",
+      price: 0,
+      category: "",
+    });
+  };
   
   
   
@@ -279,7 +342,7 @@ const handleAddBtn = () => {
                   </span>
                   <input 
                     className='text-white'
-                    type="text"
+                    type="price"
                     onChange={handleFormChange}
                     name="price"
                     value={selectedMenu.price || ""}
@@ -318,22 +381,107 @@ const handleAddBtn = () => {
                   style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
                 >
                   <img src={arrow} alt="" onClick={handleEditRes} />
-                  <p className="display-5" style={{marginRight:"37vw", marginTop:"2vw"}}>Stall</p>
                 </div>
               </div>
             </div>
           ) : addMenu ? (
             <div>
-              <div className="container-fluid">
-                <div
-                  className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
-                  style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
-                >
-                  <img src={arrow} alt="" onClick={handleAddBtn} />
-                  <p className="display-5" style={{marginRight:"37vw", marginTop:"2vw"}}>Add Menu</p>
-                </div>
+           
+            <div className="container-fluid">
+              <div
+                className="container-fluid d-flex fixed-top justify-content-between align-items-center text-white"
+                style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
+              >
+                <img src={arrow} alt="" onClick={handleAddBtn} />
               </div>
             </div>
+  
+            
+            <div className='row' style={{marginTop: "30vw", display: "flex", flexDirection: "column", alignItems: "center"}}>
+              <p className='d-flex justify-content-center align-items-center text-white display-3'>Add Menu Image</p>
+              <img src={selectedAddMenu.imageUrl} alt="" style={{width:"60vw", marginBottom:"12vw"}} />
+              <form onSubmit={handleAddSubmit} className='d-flex flex-column justify-content-center align-items-center' style={{position: "relative"}}>
+                <img 
+                  src={editLogo} 
+                  alt="Edit Logo" 
+                  style={{width: "12vw", position: "absolute", left: "70vw", top: "-10vw", cursor: "pointer"}} 
+                  onClick={handleAddImageClick} 
+                />
+                <input id="fileInputAdd" type="file" accept="image/*" style={{display: "none"}} onChange={handleAddFileChange} />
+               
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw", marginTop:"6vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={menuName} alt="" style={{height:"8vw"}} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleAddFormChange}
+                    name="name"
+                    value={selectedAddMenu.name || ""}
+                    placeholder='Menu Name'
+                    required
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={dollar} alt="" style={{height:"8vw"}} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="number"
+                    onChange={handleAddFormChange}
+                    name="price"
+                    placeholder='Price'
+                    value={selectedAddMenu.price || ""}
+                    required
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={cloud} alt="" style={{height:"8vw"}} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleAddFormChange}
+                    name="description"
+                    value={selectedAddMenu.description || ""}
+                    placeholder='Description'
+                    required
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+                <div className="input-group d-flex justify-content-center align-items-center" style={{marginBottom:"3vw"}}>
+                  <span className='d-flex justify-content-center align-items-center' style={{background:"#01040F", border:"none", height:"15vw", width:"15vw", marginTop:"-1vw", borderRadius: "2vw 0 0 2vw"}}>
+                    <img src={catego} alt=""  style={{
+                      height: "8vw", 
+                      filter: "invert(65%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)"
+                    }} />
+                  </span>
+                  <input 
+                    className='text-white'
+                    type="text"
+                    onChange={handleAddFormChange}
+                    name="category"
+                    value={selectedAddMenu.category || ""}
+                    placeholder='Category'
+                    required
+                    style={{ width: "75vw", height: "15vw", marginBottom: "1vw", background: "#01040F", border: "none", fontSize:"4vw", borderRadius: "0 2vw 2vw 0" }}
+                  />
+                </div>
+  
+                
+                <div className='d-flex justify-content-center align-items-center fixed-bottom' style={{marginBottom:"7vw"}}>
+                  <button type='submit' className='d-flex justify-content-center align-items-center text-white' style={{ width:"95vw", height:"12vw", background:"#2B964F", fontSize:"3.5vw", borderRadius:"4vw"}}>
+                    Finished
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
           ) :isQrVisible ? (
             <div>
               <div className="container-fluid">
@@ -342,9 +490,23 @@ const handleAddBtn = () => {
                   style={{ height: "20vw", background: "#191A1F", zIndex: 1000, padding:"4vw" }}
                 >
                   <img src={arrow} alt="" onClick={handleQr} />
-                  <p className="display-5" style={{marginRight:"37vw", marginTop:"2vw"}}>QR code</p>
                 </div>
+                <div className="card text-white" style={{ marginBottom: "6vw", marginTop: "21vw", background: "#01040F", borderRadius: "5vw", padding: "1vw", marginRight: "1vw", marginLeft: "1vw" }}>
+                <div className="row d-flex align-items-center justify-content-center" style={{ marginBottom: "3vw" }}>
+                
+                  <img src={selectedRestaurant.restaurant_image} className="image-fluid rounded" style={{ width: "43vw", height: "auto", marginTop: "3vw" }} alt="Restaurant" />
+
+                  <div className="row d-flex align-items-center justify-content-center">
+                    <h1 className="d-flex align-items-center justify-content-center" style={{ fontSize: "7vw", marginBottom: "2vw" }}>
+                      {selectedRestaurant.restaurant_name}
+                    </h1>
+                  </div>
               </div>
+            </div>
+            <div className='d-flex align-items-center justify-content-center'>
+              <img src={selectedRestaurant.qr_code} alt="" style={{width:"80vw", borderRadius:"5vw"}} />
+            </div>
+            </div>
             </div>
           ) : (
             <div style={{ marginTop: "20vw" }}>

@@ -104,3 +104,7 @@ html, body {
   color: #858585;
   opacity: 1; 
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background-color: white; /
+}

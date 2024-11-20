@@ -252,73 +252,86 @@ const handleAddBtn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
     console.log("selectedRestaurant:", selectedRestaurant);
-    
-    
+  
+
     if (!selectedRestaurant || !selectedRestaurant.categories) {
       console.error("selectedRestaurant or its categories are undefined.");
       return;
     }
-    
-   
+  
     const updatedCategories = { ...selectedRestaurant.categories };
   
-    
     for (const category in updatedCategories) {
       updatedCategories[category] = updatedCategories[category].map((item) =>
         item._id === selectedMenu._id ? { ...selectedMenu } : item
       );
     }
   
-    
     const updatedRestaurants = restaurants.map((restaurant) =>
       restaurant.restaurant_name === selectedRestaurant.restaurant_name
         ? { ...restaurant, categories: updatedCategories }
         : restaurant
     );
-  
-   
+ 
     const dataToSend = {
       restaurant_id: selectedRestaurant.restaurant_id,
       restaurant_name: selectedRestaurant.restaurant_name,
-      categories: updatedCategories, 
+      categories: updatedCategories,
     };
-  
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST', 
+
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(dataToSend), 
+      body: JSON.stringify(dataToSend),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to send data to the fake API");
+        return response.json();
+      })
+      .then((data) => {
         console.log("Data sent to fake API:", dataToSend);
         console.log("API Response:", data);
-  
+
         setRestaurants(updatedRestaurants);
+
+        const updatedSelectedRestaurant = updatedRestaurants.find(
+          (restaurant) =>
+            restaurant.restaurant_name === selectedRestaurant.restaurant_name
+        );
+        setSelectedRestaurant(updatedSelectedRestaurant);
+
         setSelectedMenu(null);
       })
       .catch((error) => {
         console.error("Error sending data to the fake API:", error);
       });
   };
+  
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+  
+  
     if (!selectedAddMenu.imageUrl) {
       alert("Please select an image for the menu item.");
-      return; 
+      return;
     }
+  
+  
     const dataToSend = {
       name: selectedAddMenu.name,
       price: selectedAddMenu.price,
       description: selectedAddMenu.description,
       category: selectedAddMenu.category,
-      image: selectedAddMenu.imageUrl, 
+      image: selectedAddMenu.imageUrl,
     };
   
     try {
+      
       const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
         method: "POST",
         headers: {
@@ -332,22 +345,21 @@ const handleAddBtn = () => {
       const data = await response.json();
       console.log("Fake API Response:", data);
   
+    
       const newMenuItem = { ...dataToSend, _id: data.id };
   
+      
       const updatedCategories = { ...selectedRestaurant.categories };
-  
       if (updatedCategories[newMenuItem.category]) {
-        
         updatedCategories[newMenuItem.category] = [
           ...updatedCategories[newMenuItem.category],
           newMenuItem,
         ];
       } else {
-        
         updatedCategories[newMenuItem.category] = [newMenuItem];
       }
   
-     
+   
       const updatedRestaurants = restaurants.map((restaurant) =>
         restaurant.restaurant_name === selectedRestaurant.restaurant_name
           ? { ...restaurant, categories: updatedCategories }
@@ -356,6 +368,13 @@ const handleAddBtn = () => {
   
       setRestaurants(updatedRestaurants);
   
+    
+      const updatedSelectedRestaurant = updatedRestaurants.find(
+        (restaurant) =>
+          restaurant.restaurant_name === selectedRestaurant.restaurant_name
+      );
+      setSelectedRestaurant(updatedSelectedRestaurant);
+  
       setSelectedAddMenu({
         imageUrl: null,
         name: "",
@@ -363,11 +382,12 @@ const handleAddBtn = () => {
         price: 0,
         category: "",
       });
-      setAddMenu(false); 
+      setAddMenu(false);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
+  
 
   const handleResSubmit = (e) => {
     e.preventDefault();

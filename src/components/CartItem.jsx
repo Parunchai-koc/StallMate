@@ -7,6 +7,8 @@ import bin from "../assets/remove.png";
 import plus from "../assets/plus.png";
 import minus from "../assets/minus.png";
 import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
@@ -38,35 +40,33 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
     setTableNumber(e.target.value);
   };
   
-  const handleCheckout = async () => {
+  const handleCheckout = async (event) => {
     event.preventDefault();
-    
+  
     const simplifiedCartItems = cartItems.map(item => ({
       id: item.id,
       name: item.name,
-      name_en: item.name_en,
-      price: item.price,
+      price: Math.round(item.price * 100), 
       quantity: item.quantity,
-      note: item.note,
-      totalPrice: (item.price * item.quantity).toFixed(2),
     }));
+  
     const orderData = {
       cartItems: simplifiedCartItems,
-      totalAmount: calculateTotalAmount.toFixed(2),
+      totalAmount: calculateTotalAmount.toFixed(2), 
       tableNumber: tableNumber,
     };
   
-    
     try {
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', orderData);
-      dispatch(clearCart());
-      console.log('Order placed successfully:', response.data);
-      navigate('/checkingout');
+      const response = await axios.post('http://localhost:3000/create-checkout-session', orderData);
+  
+      const stripe = await loadStripe('pk_test_51QN8ZqKOxhHKR1S0B6vdC5AhXcDbo8DEycocQ6g1QHkn2z7Z6dcDj1E6q8wtBkkMDJwrTKA5AvKvJezqmPFSiwae00bUWuWnER');
+      await stripe.redirectToCheckout({ sessionId: response.data.id });
     } catch (error) {
-      console.error('Error placing order:', error);
+      console.error('Error during checkout:', error);
     }
-    
   };
+  
+  
 
   if (!cartItems.length) {
     return <h3 className='display-1 text-white d-flex justify-content-center align-items-center'>Your cart is empty!</h3>;

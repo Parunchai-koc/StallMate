@@ -231,17 +231,20 @@ const handleAddBtn = () => {
     }
   };
   const handleAddFileChange = (e) => {
-    const file = e.target.files[0]; 
-    if (file) {
-      const fileUrl = URL.createObjectURL(file); 
-
-      setSelectedAddMenu((prev) => ({
-        ...prev,
-        imageUrl: fileUrl, 
-        
-      }));
+    try {
+      const file = e.target.files[0];
+      if (file) {
+        const fileUrl = URL.createObjectURL(file);
+        setSelectedAddMenu((prev) => ({
+          ...prev,
+          imageUrl: fileUrl,
+        }));
+      }
+    } catch (error) {
+      console.error('Error creating file URL:', error);
     }
   };
+  
 
   const handleImageClick = () => {
     document.getElementById('fileInput').click(); 
@@ -314,24 +317,21 @@ const handleAddBtn = () => {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-  
-  
+    
     if (!selectedAddMenu.imageUrl) {
       alert("Please select an image for the menu item.");
       return;
     }
-  
-  
+    
     const dataToSend = {
       name: selectedAddMenu.name,
       price: selectedAddMenu.price,
       description: selectedAddMenu.description,
       category: selectedAddMenu.category,
-      image: selectedAddMenu.imageUrl,
+      imageUrl: selectedAddMenu.imageUrl,
     };
-  
+    
     try {
-      
       const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
         method: "POST",
         headers: {
@@ -339,42 +339,50 @@ const handleAddBtn = () => {
         },
         body: JSON.stringify(dataToSend),
       });
-  
+      
       if (!response.ok) throw new Error("Failed to send data to the fake API");
-  
+      
       const data = await response.json();
       console.log("Fake API Response:", data);
-  
-    
-      const newMenuItem = { ...dataToSend, _id: data.id };
-  
       
-      const updatedCategories = { ...selectedRestaurant.categories };
-      if (updatedCategories[newMenuItem.category]) {
-        updatedCategories[newMenuItem.category] = [
-          ...updatedCategories[newMenuItem.category],
-          newMenuItem,
-        ];
-      } else {
-        updatedCategories[newMenuItem.category] = [newMenuItem];
-      }
-  
-   
-      const updatedRestaurants = restaurants.map((restaurant) =>
-        restaurant.restaurant_name === selectedRestaurant.restaurant_name
-          ? { ...restaurant, categories: updatedCategories }
-          : restaurant
-      );
-  
-      setRestaurants(updatedRestaurants);
-  
-    
-      const updatedSelectedRestaurant = updatedRestaurants.find(
-        (restaurant) =>
+      const newMenuItem = { 
+        ...dataToSend, 
+        _id: data.id,
+        image: selectedAddMenu.imageUrl 
+      };
+      
+      setRestaurants(prevRestaurants => {
+        const updatedCategories = { ...selectedRestaurant.categories };
+        if (updatedCategories[newMenuItem.category]) {
+          updatedCategories[newMenuItem.category] = [
+            ...updatedCategories[newMenuItem.category],
+            newMenuItem, 
+          ];
+        } else {
+          updatedCategories[newMenuItem.category] = [newMenuItem];
+        }
+        
+        const updatedRestaurants = prevRestaurants.map((restaurant) =>
           restaurant.restaurant_name === selectedRestaurant.restaurant_name
-      );
-      setSelectedRestaurant(updatedSelectedRestaurant);
-  
+            ? { 
+                ...restaurant, 
+                categories: updatedCategories,
+                images: restaurant.images 
+                  ? [...restaurant.images, newMenuItem.image] 
+                  : [newMenuItem.image]
+              }
+            : restaurant
+        );
+        
+        const updatedSelectedRestaurant = updatedRestaurants.find(
+          (restaurant) => restaurant.restaurant_name === selectedRestaurant.restaurant_name
+        );
+        
+        setSelectedRestaurant(updatedSelectedRestaurant);
+        
+        return updatedRestaurants;
+      });
+      
       setSelectedAddMenu({
         imageUrl: null,
         name: "",
@@ -778,7 +786,7 @@ const handleAddBtn = () => {
             
             <div className='row' style={{marginTop: "30vw", display: "flex", flexDirection: "column", alignItems: "center"}}>
               <p className='d-flex justify-content-center align-items-center text-white display-3'>Add Menu Image</p>
-              <img src={selectedAddMenu.imageUrl} alt="" style={{width:"60vw", marginBottom:"12vw"}} />
+              <img src={selectedAddMenu.imageUrl || "placeholder.jpg"} alt="Menu Preview" style={{width:"60vw", marginBottom:"12vw", color:"white"}} />
               <form onSubmit={handleAddSubmit} className='d-flex flex-column justify-content-center align-items-center' style={{position: "relative"}}>
                 <img 
                   src={editLogo} 

@@ -5,6 +5,9 @@ import loadingIcon from '../assets/checkingout.png';
 
 const Loading = () => {
   const navigate = useNavigate();
+  const savedCartData = localStorage.getItem('cartData');
+  //const cartItems = savedCartData ? JSON.parse(savedCartData) : [];
+  console.log(JSON.parse(savedCartData));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -13,7 +16,9 @@ const Loading = () => {
 
     return () => clearTimeout(timer);
   }, [navigate]);
-
+  localStorage.removeItem('cartData');
+  
+  
   return (
     <div 
       className="d-flex flex-column justify-content-center align-items-center vh-100"

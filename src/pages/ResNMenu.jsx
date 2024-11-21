@@ -174,7 +174,7 @@ const ResNMenu = () => {
                     <img src={selectedItem.imageUrl} className="image-fluid rounded" style={{ width: "50vw", height: "auto", marginTop:"3vw" }} />
                   </div>
                   <div className="col align-items-center">
-                    <h2 className='text-white' style={{fontSize:"6vw"}}>{selectedLanguage == 'English'? selectedItem.item : selectedItem.item_th}</h2>
+                    <h2 className='text-white' style={{fontSize:"6vw"}}>{selectedLanguage == 'English'? selectedItem.name_en : selectedItem.name}</h2>
                     <Dropdown onSelect={handleSelectLanguage} style={{marginTop:"6vw"}}>
                       <Dropdown.Toggle id="dropdown-basic" style={{fontSize:"3.5vw", display: "flex", alignItems: "center",color:"black", fontWeight:600,background:"#4CF986"}}>
                         <img 

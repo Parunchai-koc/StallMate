@@ -7,12 +7,19 @@ import bin from "../assets/remove.png";
 import plus from "../assets/plus.png";
 import minus from "../assets/minus.png";
 import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
+
+
 
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [tableNumber, setTableNumber] = useState('');
   const calculateItemTotal = (item) => item.price * item.quantity;
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+  const handleChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
 
   const calculateTotalAmount = useSelector(state => state.cart.amount);
 
@@ -38,35 +45,40 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
     setTableNumber(e.target.value);
   };
   
-  const handleCheckout = async () => {
+  const handleCheckout = async (event) => {
     event.preventDefault();
-    
+  
     const simplifiedCartItems = cartItems.map(item => ({
       id: item.id,
       name: item.name,
-      name_en: item.name_en,
-      price: item.price,
+      price: Math.round(item.price * 100), 
       quantity: item.quantity,
-      note: item.note,
-      totalPrice: (item.price * item.quantity).toFixed(2),
     }));
+  
     const orderData = {
       cartItems: simplifiedCartItems,
-      totalAmount: calculateTotalAmount.toFixed(2),
+      totalAmount: calculateTotalAmount.toFixed(2), 
       tableNumber: tableNumber,
     };
+
+    localStorage.setItem('cartData', JSON.stringify(orderData));
   
+    if(paymentMethod === "card"){
+      try {
+        const response = await axios.post('http://localhost:3000/create-checkout-session', orderData);
     
-    try {
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', orderData);
-      dispatch(clearCart());
-      console.log('Order placed successfully:', response.data);
-      navigate('/checkingout');
-    } catch (error) {
-      console.error('Error placing order:', error);
+        const stripe = await loadStripe('pk_test_51QN8ZqKOxhHKR1S0B6vdC5AhXcDbo8DEycocQ6g1QHkn2z7Z6dcDj1E6q8wtBkkMDJwrTKA5AvKvJezqmPFSiwae00bUWuWnER');
+        await stripe.redirectToCheckout({ sessionId: response.data.id });
+      } catch (error) {
+        console.error('Error during checkout:', error);
+      }
     }
-    
+    else{
+      navigate('/checkingout');
+    }
   };
+  
+  
 
   if (!cartItems.length) {
     return <h3 className='display-1 text-white d-flex justify-content-center align-items-center'>Your cart is empty!</h3>;
@@ -164,10 +176,18 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
         <p>Discounts</p>
         <p style={{color:"#2B964F"}}>0.00 THB</p>
       </div>
-      <div className="col-12 d-flex justify-content-between">
-        <p>Cards</p>
-        <p style={{color:"#92E3A9"}}>***456</p>
-      </div>
+      <div className="col-12 d-flex justify-content-between align-items-center">
+      <p>Payment Method</p>
+      <select
+        value={paymentMethod}
+        onChange={handleChange}
+        className="form-select w-auto"
+        style={{background:"black", color:"white", border:"none", marginTop:"-2vw"}}
+      >
+        <option value="cash">Cash</option>
+        <option value="card">Card</option>
+      </select>
+    </div>
     </div>
     <div className="row d-flex justify-content-center" style={{marginLeft:"1vw", marginRight:'1vw'}}>
       <button className='row text-white bg-success justify-content-center' type="submit" style={{height:"11.5vw", fontSize:"4vw"}}>Checkout</button>

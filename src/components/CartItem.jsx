@@ -10,11 +10,16 @@ import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 
 
+
 const CartItem = ({ cartItems, onContinueShopping }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [tableNumber, setTableNumber] = useState('');
   const calculateItemTotal = (item) => item.price * item.quantity;
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+  const handleChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
 
   const calculateTotalAmount = useSelector(state => state.cart.amount);
 
@@ -55,14 +60,21 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       totalAmount: calculateTotalAmount.toFixed(2), 
       tableNumber: tableNumber,
     };
+
+    localStorage.setItem('cartData', JSON.stringify(orderData));
   
-    try {
-      const response = await axios.post('http://localhost:3000/create-checkout-session', orderData);
-  
-      const stripe = await loadStripe('pk_test_51QN8ZqKOxhHKR1S0B6vdC5AhXcDbo8DEycocQ6g1QHkn2z7Z6dcDj1E6q8wtBkkMDJwrTKA5AvKvJezqmPFSiwae00bUWuWnER');
-      await stripe.redirectToCheckout({ sessionId: response.data.id });
-    } catch (error) {
-      console.error('Error during checkout:', error);
+    if(paymentMethod === "card"){
+      try {
+        const response = await axios.post('http://localhost:3000/create-checkout-session', orderData);
+    
+        const stripe = await loadStripe('pk_test_51QN8ZqKOxhHKR1S0B6vdC5AhXcDbo8DEycocQ6g1QHkn2z7Z6dcDj1E6q8wtBkkMDJwrTKA5AvKvJezqmPFSiwae00bUWuWnER');
+        await stripe.redirectToCheckout({ sessionId: response.data.id });
+      } catch (error) {
+        console.error('Error during checkout:', error);
+      }
+    }
+    else{
+      navigate('/checkingout');
     }
   };
   
@@ -164,10 +176,18 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
         <p>Discounts</p>
         <p style={{color:"#2B964F"}}>0.00 THB</p>
       </div>
-      <div className="col-12 d-flex justify-content-between">
-        <p>Cards</p>
-        <p style={{color:"#92E3A9"}}>***456</p>
-      </div>
+      <div className="col-12 d-flex justify-content-between align-items-center">
+      <p>Payment Method</p>
+      <select
+        value={paymentMethod}
+        onChange={handleChange}
+        className="form-select w-auto"
+        style={{background:"black", color:"white", border:"none", marginTop:"-2vw"}}
+      >
+        <option value="cash">Cash</option>
+        <option value="card">Card</option>
+      </select>
+    </div>
     </div>
     <div className="row d-flex justify-content-center" style={{marginLeft:"1vw", marginRight:'1vw'}}>
       <button className='row text-white bg-success justify-content-center' type="submit" style={{height:"11.5vw", fontSize:"4vw"}}>Checkout</button>

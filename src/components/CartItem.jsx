@@ -59,6 +59,7 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       cartItems: simplifiedCartItems,
       totalAmount: calculateTotalAmount.toFixed(2), 
       tableNumber: tableNumber,
+      paymentMethod: paymentMethod
     };
 
     localStorage.setItem('cartData', JSON.stringify(orderData));
@@ -77,6 +78,8 @@ const CartItem = ({ cartItems, onContinueShopping }) => {
       navigate('/checkingout');
     }
   };
+
+  
   
   
 

@@ -959,7 +959,7 @@ const handleAddBtn = () => {
                 </div>
                 <div className="col">
                   <div className="row d-flex align-items-center justify-content-end">
-                    <img src={editLogo} alt="" style={{ width: "9vw", marginRight: "6vw" }} onClick={handleEditRes} />
+                    <img src={editLogo} alt="" style={{ width: "10vw", marginRight: "6vw" }} onClick={handleEditRes} />
                     <h1 style={{ fontSize: "7vw", marginBottom: "2vw" }}>
                       {selectedRestaurant.restaurant_name}
                     </h1>
@@ -992,7 +992,7 @@ const handleAddBtn = () => {
                     <h3 style={{ fontSize: "6vw", color: "white", marginTop: "3vw", marginLeft: "1vw" }}>{category}</h3>
                   </div>
                   {items.map((item, index) => (
-                    <li key={index} className="card d-flex justify-content-between align-items-start text-white" style={{ border: "none", marginBottom: "2vw", background: "none" }} onClick={() => handleFoodClick(item)}>
+                    <li key={index} className="card d-flex justify-content-between align-items-start text-white" style={{ border: "none", marginBottom: "2vw", background: "none" }}>
                       <hr className="my-4" style={{ borderTop: '2px solid grey', width: '90vw', position: 'relative', left: '50%', transform: 'translateX(-50%)' }} />
                       <div className="row">
                         <div className="col">
@@ -1006,6 +1006,9 @@ const handleAddBtn = () => {
                             <div className="col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: "4vw" }}>
                               <span className="badge bg-success rounded-pill" style={{ marginRight: "10vw", fontSize: "4vw" }}>
                                 {item.price} THB
+                              </span>
+                              <span onClick={() => handleFoodClick(item)}>
+                                <img src={editLogo} alt="" />
                               </span>
                             </div>
                           </div>

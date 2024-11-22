@@ -18,6 +18,7 @@ import StallMenu from './stallPages/StallMenu';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
+import StallHome from './stallPages/StallHome'
 
 function App() {
   const { username } = useParams();
@@ -67,6 +68,10 @@ function App() {
         <Route 
           path="/checkingout" 
           element={isLoggedIn ? <Loading /> : <Navigate to='/login' />} 
+        />
+        <Route 
+          path="/stallHome" 
+          element={isLoggedIn ? <StallHome /> : <Navigate to='/login' />} 
         />
       </Routes>
     </Router>

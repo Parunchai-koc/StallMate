@@ -95,8 +95,8 @@ const StallMenu = () => {
             }
           ]
         },
-        "opening_hours": [
-          {
+       "opening_hours": [
+          { 
             "weekday": "Monday",
             "open_time": "09:00",
             "close_time": "21:00"
@@ -786,7 +786,7 @@ const handleAddBtn = () => {
             
             <div className='row' style={{marginTop: "30vw", display: "flex", flexDirection: "column", alignItems: "center"}}>
               <p className='d-flex justify-content-center align-items-center text-white display-3'>Add Menu Image</p>
-              <img src={selectedAddMenu.imageUrl || "placeholder.jpg"} alt="Menu Preview" style={{width:"60vw", marginBottom:"12vw", color:"white"}} />
+              <img src={selectedAddMenu.imageUrl}  style={{width:"60vw", marginBottom:"12vw", color:"white"}} />
               <form onSubmit={handleAddSubmit} className='d-flex flex-column justify-content-center align-items-center' style={{position: "relative"}}>
                 <img 
                   src={editLogo} 

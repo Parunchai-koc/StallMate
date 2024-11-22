@@ -18,9 +18,11 @@ import StallMenu from './stallPages/StallMenu';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Loading from './components/Loading'
+
 import EditProfile from './pages/EditProfile';
 import StallHome from './stallPages/StallHome';
 import EditStall from './stallPages/EditStall'
+
 
 function App() {
   const { username } = useParams();

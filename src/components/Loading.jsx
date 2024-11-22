@@ -11,6 +11,7 @@ const Loading = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      
       navigate('/home');
     }, 3000);
 

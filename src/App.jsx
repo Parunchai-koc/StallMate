@@ -22,6 +22,7 @@ import EditProfile from './pages/EditProfile';
 import StallHome from './stallPages/StallHome';
 import EditStall from './stallPages/EditStall';
 import Favourite from './pages/Favourite';
+import History from './pages/History';
 
 function App() {
   const { username } = useParams();
@@ -111,7 +112,11 @@ function App() {
         <Route 
           path='/favourite'
           element={isLoggedIn ? <Favourite /> : <Navigate to='/login' />}
-        /> 
+        />
+        <Route 
+          path='/history'
+          element={isLoggedIn ? <History /> : <Navigate to='/login' />}
+        />  
         
       </Routes>
     </Router>

@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.back-but svg {
+    height: 6.977vw;
+    width: 6.977vw;
+    margin-top: 10.465vw;
+    margin-left: 4.651vw;
+}
+
+.Fav-Head {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-top: 5.349vw;
+}
+
+.Fav-Head p {
+    color: #FFFFFF;
+    font-family: 'poppins';
+    font-weight: 600;
+    font-size: 5.581vw;
+    margin-left: 11.628vw;
+}
+
+.Fav-Head svg {
+    height: 5.349vw;
+    width: 5.349vw;
+    margin-right: 14.419vw;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.history_card {
+    display: grid;
+    margin-top: 4.651vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.card_content {
+    display: grid;
+    grid-template-columns: 22.791vw 42.791vw 21.163vw;
+    grid-template-rows: 4.186vw 3.953vw 8.837vw;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.465vw solid white;
+    margin-bottom: 3.953vw;
+    margin-left: 3.488vw;
+    margin-right: 3.488vw;
+    flex-wrap: wrap
+}
+
+.history_card_image {
+    display: grid;
+    grid-column: 1/2;
+    grid-row: 1/4;
+    justify-content: center;
+    place-items: center;
+}
+
+.history_card_price {
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    place-items: center;
+    grid-column: 3/4;
+    grid-row: 2/3;
+}
+
+.card_content img {
+    width: 15.581vw;
+    height: 16.047vw;
+}
+
+.history_card_date {
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    justify-content: start;
+    align-items: center;
+}
+
+.history_card_stall {
+    display: flex;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    align-items: stretch;
+    gap: 1.163vw;
+    justify-content: start;
+}
+
+.history_card_status {
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 3/4;
+    justify-content: start;
+    place-items: center;
+}
+
+.card_content .history_card_stall svg {
+    width: 2.558vw;
+    height: 2.558vw;
+    flex-shrink: 0
+}
+
+.card_content .history_card_date p {
+    color: #FFFFFF;
+    font-size: 2.791vw;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.card_content .history_card_stall p {
+    color: #FFFFFF;
+    font-size: 2.326vw;
+    font-weight: 400;
+}
+
+.card_content .history_card_status p {
+    color: #4CD964;
+    font-size: 2.326vw;
+    font-weight: 700;
+}
+
+.card_content .history_card_price p {
+    color: #FFFFFF;
+    font-size: 3.721vw;
+    font-weight: 600;
+}

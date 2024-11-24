@@ -23,6 +23,7 @@ import StallHome from './stallPages/StallHome';
 import EditStall from './stallPages/EditStall';
 import Favourite from './pages/Favourite';
 import History from './pages/History';
+import Order_details from './pages/Order_details';
 
 function App() {
   const { username } = useParams();
@@ -116,7 +117,11 @@ function App() {
         <Route 
           path='/history'
           element={isLoggedIn ? <History /> : <Navigate to='/login' />}
-        />  
+        />
+        <Route 
+          path='/history/order-details'
+          element={isLoggedIn ? <Order_details /> : <Navigate to='/login' />}
+        />   
         
       </Routes>
     </Router>

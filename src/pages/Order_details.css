@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.back-but svg {
+    height: 6.977vw;
+    width: 6.977vw;
+    margin-top: 10.465vw;
+    margin-left: 4.651vw;
+}
+
+.top-container {
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 11.628vw;
+}
+
+.top-container h1 {
+    color: #FFFFFF;
+    font-size: 5.581vw;
+    font-weight: 600;
+}
+
+.top-container p {
+    color: #FFFFFF;
+    font-size: 2.326vw;
+    opacity: 0.78;
+    font-weight: 400;
+}
+
+.stall-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 11.628vw;
+    gap: 4.419vw;
+}
+
+.stall-container img {
+    width: 20.233vw;
+    height: 20.93vw;
+}
+
+.stall-container p {
+    color: #FFFFFF;
+    font-size: 3.721vw;
+    font-weight: 700;
+}
+
+#menu {
+    color: #FFFFFF;
+    font-size: 3.256vw;
+    font-weight: 700;
+    margin-left: 13.023vw;
+    margin-top: 3.023vw;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: 9.07vw 29.767vw 30.93vw;
+    grid-template-rows: 8.837vw;
+    margin-left: 17.907vw;
+    margin-right: 12.326vw;
+    justify-content: center;
+    margin-top: 3.256vw;
+    margin-bottom: 3.256vw;
+}
+
+.menu-quantity {
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+.menu-name {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+
+.menu-price {
+    display: flex;
+    justify-content: flex-end;
+    grid-column: 3/4;
+    grid-row: 1/2;
+}
+
+.menu-quantity p {
+    color: #FFFFFF;
+    font-size: 3.721vw;
+    font-weight: 700;
+}
+
+.menu-name p {
+    color: #FFFFFF;
+    font-size: 3.721vw;
+    font-weight: 500;
+}
+
+#note {
+    color: #FFFFFF;
+    font-size: 2.326vw;
+    font-weight: 400;
+    margin-top: -3.488vw ;
+}
+
+.menu-price p {
+    color: #FFFFFF;
+    font-size: 3.488vw;
+    font-weight: 600;
+}
+
+hr {
+    color:#FFFFFF;
+    opacity: 1;
+    font-size: 0.465vw;
+    margin-left: 13.023vw;
+    margin-right: 12.326vw;
+}
+
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 13.023vw;
+    margin-right: 12.326vw;
+
+}
+
+.total-price p {
+    color: #FFFFFF;
+    font-size: 3.488vw;
+    font-weight: 600;
+}
+
+.payment {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 13.023vw;
+    margin-right: 12.326vw;
+
+}
+
+.payment p {
+    color: #FFFFFF;
+    font-size: 3.256vw;
+    font-weight: 600;
+}
